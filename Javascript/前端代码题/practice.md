@@ -4,9 +4,9 @@
 ✅实现 Object.create
 ✅实现 Object.assign
 使用 Promise 封装 Ajax
-实现 call( ) 方法
-实现 apply( ) 方法
-实现 bind( ) 方法
+✅实现 Function.prototype.call 方法
+✅实现 Function.prototype.apply 方法
+✅实现 Function.prototype.bind 方法
 打平数组
 防抖（debounce）
 节流（throttle）
@@ -88,20 +88,18 @@ class Child extends Parent {
 }
 ```
 
-
 ## 实现 new 关键字
 
 ```js
 function myNew() {
     const constructor = Array.prototype.shift.call(arguments)
     
-
     const object = Object.create(constructor.prototype)
     // or
     const object = new Object()
     object.__proto__ = constrctor.prototype
 
-    const result = constructor.apply(this, arguments)
+    const result = constructor.apply(object, arguments)
 
     return typeof result === 'object' && result !== null ? result : object
 }
@@ -141,5 +139,84 @@ function myAssign(target, ...source){
     })
 
     return result
+}
+```
+
+# 2024-12-01
+
+## 实现 Function.prototype.bind 方法
+
+```js
+if(!Function.prototype.bind) {
+    Function.prototype.bind = function(otherThis) {
+        if(typeof this !== 'function'){
+            throw Error('...')
+        }
+
+        const args = Array.prototype.slice(arguments, 1)
+
+        const fToBind = this
+        const fNop = function(){}
+        const fBound = function() {
+            const newArgs = Array.prototype.concat.apply(arguments, args)
+
+            return fToBind.apply(this instanceof fNop ? this : otherThis, newArgs)
+        }
+
+        if(this.prototype){
+            fNop.prototype = this.prototype
+        }
+        fBound.prototype = new fNop()
+
+        return fBound
+    }
+}
+```
+
+## 实现 Function.prototype.call 方法
+
+```js
+if(!Function.prototype.call) {
+    Function.prototype.call = function(context, ...args) {
+        if(typeof this !== 'function'){
+            throw Error('...')
+        }
+
+        context = context || window
+
+        const key = Symbol()
+        context[key] = this
+        const res = context[key](...args)
+
+        delete context[key]
+
+        return res
+    }
+}
+```
+
+## 实现 Function.prototype.apply 方法
+
+```js
+if(!Function.prototype.apply) {
+    Function.prototype.apply = function(context, args) {
+        if(typeof this !== 'function'){
+            throw Error('...')
+        }
+
+        if(!Array.isArray(args)){
+            throw Error('...')
+        }
+
+        context = context || window
+
+        const key = Symbol()
+        context[key] = this
+        const res = context[key](...args)
+
+        delete context[key]
+
+        return res
+    }
 }
 ```
