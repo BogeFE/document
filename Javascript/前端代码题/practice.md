@@ -1,23 +1,44 @@
+
 实现 instanceof 关键字
+
 ✅实现继承
+
 ✅实现 new 关键字
+
 ✅实现 Object.create
+
 ✅实现 Object.assign
+
 使用 Promise 封装 Ajax
+
 ✅实现 Function.prototype.call 方法
+
 ✅实现 Function.prototype.apply 方法
+
 ✅实现 Function.prototype.bind 方法
-打平数组
+
+✅打平数组
+
 防抖（debounce）
+
 节流（throttle）
+
 实现数组原型方法
+
 EventBus 事件总线 —— 发布订阅模式
+
 使用 setTimeout 实现 setInterval
+
 深浅拷贝
+
 函数柯里化
+
 实现 Promise 及其相关方法
+
 解析 URL 参数
+
 数据双向绑定
+
 JSONP
 
 # 2024-11-30
@@ -26,67 +47,67 @@ JSONP
 
 1. 原型链继承
 
-```js
-function Parent(){}
+    ```js
+    function Parent(){}
 
-function Child(){}
+    function Child(){}
 
-Child.prototype = new Parent()
-Child.prototype.constructor = Child
-```
+    Child.prototype = new Parent()
+    Child.prototype.constructor = Child
+    ```
 
 2. 构造函数继承
 
-```js
-function Parent(){}
+    ```js
+    function Parent(){}
 
-function Child(){
-    Parent.call(this)
-}
-```
+    function Child(){
+        Parent.call(this)
+    }
+    ```
 
 3. 组合继承
 
-```js
-function Parent(){}
+    ```js
+    function Parent(){}
 
-function Child(){
-    Parent.call(this)
-}
+    function Child(){
+        Parent.call(this)
+    }
 
-Child.prototype = new Parent()
-Child.prototype.constructor = Child
-```
+    Child.prototype = new Parent()
+    Child.prototype.constructor = Child
+    ```
 
 4. 寄生组合继承
 
-```js
-function Parent(){}
+    ```js
+    function Parent(){}
 
-function Child(name){
-    Parent.call(this)
-}
+    function Child(name){
+        Parent.call(this)
+    }
 
-function tempFunction = (){}
-tempFunction.prototype = Parent.prototype
-Child.prototype = new tempFunction()
-// or
-Child.prototype = Object.create(Parent.prototype)
+    function tempFunction = (){}
+    tempFunction.prototype = Parent.prototype
+    Child.prototype = new tempFunction()
+    // or
+    Child.prototype = Object.create(Parent.prototype)
 
-Child.prototype.constructor = Child
-```
+    Child.prototype.constructor = Child
+    ```
 
 5. ES6 继承
 
-```js
-class Parent {}
+    ```js
+    class Parent {}
 
-class Child extends Parent {
-    constructor(){
-        super()
+    class Child extends Parent {
+        constructor(){
+            super()
+        }
     }
-}
-```
+    ```
 
 ## 实现 new 关键字
 
@@ -217,6 +238,26 @@ if(!Function.prototype.apply) {
         delete context[key]
 
         return res
+    }
+}
+```
+
+# 2024-12-02
+
+## 打平数组
+
+```js
+function flatDepth(arr, depth = 1) {
+    if(depth >= 1) {
+        return arr.reduce((res, item) => {
+            if(Array.isArray(item)){
+                return res.concat(flatDepth(item, depth - 1))
+            }else {
+                return res.concat(item)
+            }
+        })
+    }else {
+        return arr.slice()
     }
 }
 ```
