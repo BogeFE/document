@@ -48,16 +48,16 @@
     const p = new Promise((resolve, reject) => {})
     ```
 
-    - 入参是一个执行器函数 excutor，接收 reslove 和 reject 两个参数
+    - 入参是一个执行器函数 executor，接收 reslove 和 reject 两个参数
 
     - 初始化 promise 时就要执行这个函数，即该函数是同步执行的，并且有任何的报错都要通过 reject 抛出
 
         ```js
-        constructor(excutor) {
+        constructor(executor) {
              // 省略其他代码
 
             try {
-                excutor(this.resolve.bind(this), this.reject.bind(this))
+                executor(this.resolve.bind(this), this.reject.bind(this))
             } catch (error) {
                 this.reject(error)
             }

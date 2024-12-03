@@ -10,13 +10,13 @@ class MyPromise {
     // 私有变量
     _status = PENDING
 
-    constructor(excutor) {
+    constructor(executor) {
         this.status = PENDING
         this.value = null
         this.reason = null
 
         try {
-            excutor(this.resolve.bind(this), this.reject.bind(this))
+            executor(this.resolve.bind(this), this.reject.bind(this))
         } catch (error) {
             this.reject(error)
         }
