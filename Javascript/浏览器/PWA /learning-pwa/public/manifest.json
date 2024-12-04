@@ -1,0 +1,41 @@
+{
+    "name": "测试PWA",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#333",
+    "description": "爪哇教育PWA教程",
+    "orientation": "landscape",
+    "theme_color": "red",
+    "dir": "rtl",
+    "lang": "ar",
+    "short_name": "أنا من التطبيق!",
+    "icons": [{
+        "src": "img/icons/zhuawa-32.png",
+        "sizes": "32x32",
+        "type": "image/png"
+    }, {
+        "src": "img/icons/zhuawa-72.png",
+        "sizes": "72x72",
+        "type": "image/png"
+    }, {
+        "src": "img/icons/zhuawa-128.png",
+        "sizes": "128x128",
+        "type": "image/png"
+    }, {
+        "src": "img/icons/zhuawa-144.png",
+        "sizes": "144x144",
+        "type": "image/png"
+    }, {
+        "src": "img/icons/zhuawa-192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+    }, {
+        "src": "img/icons/zhuawa-256.png",
+        "sizes": "256x256",
+        "type": "image/png"
+    }, {
+        "src": "img/icons/zhuawa-512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+    }]
+}

@@ -3,7 +3,7 @@ class BomEvent {
         this.element = element;
     }
 
-    addEvent(type, handler  ) {
+    addEvent(type, handler) {
         if (this.element.addEventListener) {
             //事件类型、需要执行的函数、是否捕捉
             this.element.addEventListener(type, handler, false);
