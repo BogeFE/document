@@ -1,4 +1,4 @@
-实现 instanceof 关键字
+✅ 实现 instanceof 运算符
 
 ✅ 实现继承
 
@@ -8,7 +8,7 @@
 
 ✅ 实现 Object.assign
 
-使用 Promise 封装 Ajax
+✅ 使用 Promise 封装 Ajax
 
 ✅ 实现 Function.prototype.call 方法
 
@@ -26,7 +26,7 @@
 
 EventBus 事件总线 —— 发布订阅模式
 
-使用 setTimeout 实现 setInterval
+✅ 使用 setTimeout 实现 setInterval
 
 深浅拷贝
 
@@ -522,4 +522,167 @@ Array.prototype.reduce = function (callbackFn, initialValue) {
       })
     })
   }
+  ```
+
+# 2024-12-04
+
+## 使用 Promise 封装 AJAX
+
+- AJAX —— Asynchronous JavaScript and XML，即异步的 Javascript 和 XML
+
+- 基于 [XMLHttpRequest](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest) 实现
+
+  - XMLHttpRequest.open() —— 初始化一个请求
+
+  - XMLHttpRequest.send() —— 发送请求
+
+  - onreadystatechange 事件监听 —— 当 readyState 属性发生变化时，调用的事件处理器
+
+  - readyStatus —— XMLHttpRequest 代理当前所处的状态，值为 4 表示请求操作已经完成
+
+    ```js
+    type AjaxType = 'GET' | 'POST' | 'PUT' | 'DELETE'
+
+    interface MyOptions {
+      url: string
+      type?: AjaxType
+      data: any
+      timeout?: number
+    }
+
+    function formatUrl(json) {
+      let [dataArray, newJson] = [[], { ...json }]
+      for (const key in neJson) {
+        dataArray.push(`${key}=${encodeURIComponent(json[key])}`)
+      }
+
+      return dataArray.join('&')
+    }
+
+    function ajax(
+      options: MyOptions = {
+        type: 'GET',
+        timeout: 3000,
+        url: '',
+        data: {},
+      }
+    ) {
+      return new Promise((resolve, reject) => {
+        if (!options.url) return
+
+        let dataToUrlStr = formatUrl(options.data)
+        let xhr, timer
+
+        if ((window as any).XMLHttpRequest) {
+          xhr = new XMLHttpRequest()
+        } else {
+          xhr = new ActiveXObject('Microsoft.XMLHTTP')
+        }
+
+        if (options.type.toUpperCase() === 'GET') {
+          xhr.open('get', `${options.url}?${dataToUrlStr}`)
+          xhr.send()
+        } else if (options.type.toUpperCase() === 'POST') {
+          xhr.open('post', options.url)
+          xhr.setRequestHeader(
+            'ContentType',
+            'application/x-www-form-urlencoded'
+          )
+          xhr.send(options.data)
+        }
+
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+            clearTimeout(timer)
+
+            if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
+              resolve(xhr.responseText)
+            } else {
+              reject(xhr.status)
+            }
+          }
+        }
+
+        if (options.timeout) {
+          timer = setTimeout(() => {
+            xhr.abort()
+            reject('超时')
+          }, options.timeout)
+        }
+      })
+    }
+    ```
+
+## 实现 instanceof 运算符
+
+目的：用于检测构造函数的 prototype 属性是否出现在某个实例对象的原型链上
+
+- 判断左侧参数是否为一个对象 —— 如果不是则直接返回 false
+
+- 获取左侧对象的原型对象 —— 使用 Object.getPrototypeOf
+
+- 获取左侧构造函数的原型 —— 访问其 prototype 属性
+
+- 不断比较二者
+
+  - 使用 while 循环
+
+  - 若两侧不相等，获取并赋值为左侧对象的原型对象的原型对象并继续比较 —— leftPrototype = Object.getPrototypeOf(leftPrototype)
+
+  - 如果获取到的原型对象 leftPrototype 为 null 则返回 false
+
+```js
+function MyInstanceOf(left, right) {
+  if (typeof left !== 'object' || left === null) {
+    return false
+  }
+
+  let leftPrototype = Object.getPrototypeOf(left)
+  let rightPrototype = right.prototype
+
+  while (true) {
+    if (!leftPrototype) return false
+
+    if (leftPrototype === rightPrototype) return true
+
+    leftPrototype = Object.getPrototypeOf(leftPrototype)
+  }
+}
+```
+
+### 使用 setTimeout 实现 setInterval
+
+- setInterval —— 重复调用一个函数或执行一个代码片段，在每次调用之间具有固定的时间间隔
+
+  - 第一个参数 func —— 需要重复执行的函数/代码片段
+
+  - 第二个参数 delay —— 重复执行的时间间隔
+
+  - 第三个参数 ...args —— 需要传入 func 的参数，使用扩展操作符收集
+
+- 简单的实现思路 —— 在一个函数 recur 中使用 setTimeout，同时调用 func 和 recur
+
+- 能否提供一个取消定时的功能？ —— 通过闭包将 clearTimeout(timer) 暴露给外界访问
+
+  ```js
+  function mySetInterval(func, delay, ...args) {
+    let timer
+
+    const recur = () => {
+      timer = setTimeout(() => {
+        func.apply(this, args)
+        recur()
+      }, delay)
+
+    }
+      recur()
+
+      return () =>{
+        clearTimeout(timeout)
+      }
+  }
+
+  const cancelTimeout = mySetInterval()
+
+  cancelTimeout()
   ```
