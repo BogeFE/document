@@ -673,16 +673,54 @@ function MyInstanceOf(left, right) {
         func.apply(this, args)
         recur()
       }, delay)
-
     }
-      recur()
+    recur()
 
-      return () =>{
-        clearTimeout(timeout)
-      }
+    return () => {
+      clearTimeout(timeout)
+    }
   }
 
   const cancelTimeout = mySetInterval()
 
   cancelTimeout()
   ```
+
+# 2024-12-05
+
+## 防抖（debounce）
+
+```js
+function debounce(func, delay) {
+  let timer
+  return function () {
+    const [ctx, args] = [this, [...arguments]]
+    if (timer) {
+      clearTimeout(timer)
+    }
+
+    setTimeout(() => {
+      func.apply(ctx, args)
+    }, delay)
+  }
+}
+```
+
+## 节流（throttle）
+
+```js
+function throttle(func, timeout) {
+  let last = 0
+
+  return function () {
+    const [now, ctx] = [Date.now(), this]
+
+    if (now - last > timeout) {
+      func.apply(ctx, [...arguments])
+      last = now
+    }
+  }
+}
+```
+
+## 深浅拷贝
