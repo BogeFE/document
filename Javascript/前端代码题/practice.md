@@ -18,9 +18,9 @@
 
 ✅ 打平数组
 
-防抖（debounce）
+✅ 防抖（debounce）
 
-节流（throttle）
+✅ 节流（throttle）
 
 ✅ 实现数组原型方法
 
@@ -28,7 +28,7 @@ EventBus 事件总线 —— 发布订阅模式
 
 ✅ 使用 setTimeout 实现 setInterval
 
-深浅拷贝
+✅ 深浅拷贝
 
 函数柯里化
 
@@ -686,21 +686,20 @@ function MyInstanceOf(left, right) {
   cancelTimeout()
   ```
 
-# 2024-12-05
+# 2024-12-07
 
 ## 防抖（debounce）
 
 ```js
 function debounce(func, delay) {
-  let timer
+  let timer = null
   return function () {
-    const [ctx, args] = [this, [...arguments]]
+    const ctx = this
     if (timer) {
       clearTimeout(timer)
     }
-
-    setTimeout(() => {
-      func.apply(ctx, args)
+    timer = setTimeout(() => {
+      func.apply(ctx, [...arguments])
     }, delay)
   }
 }
@@ -708,19 +707,118 @@ function debounce(func, delay) {
 
 ## 节流（throttle）
 
-```js
-function throttle(func, timeout) {
-  let last = 0
+- 节流的目的 —— 在一段时间内只执行一次函数
 
-  return function () {
-    const [now, ctx] = [Date.now(), this]
+- 用 **时间戳** 实现 —— 停止触发后不会再执行
 
-    if (now - last > timeout) {
-      func.apply(ctx, [...arguments])
-      last = now
+  ```js
+  function throttle(func, timeout) {
+    let last = 0
+
+    return function () {
+      const [now, ctx] = [Date.now(), this]
+
+      if (now - last > timeout) {
+        func.apply(ctx, [...arguments])
+        last = now
+      }
     }
   }
-}
-```
+  ```
 
-## 深浅拷贝
+- 用 **定时器** 实现 —— 无法立即执行，第一次执行在 n 秒后
+
+  ```js
+  function throttle(func, timeout) {
+    let timer = null
+
+    return function () {
+      const ctx = this
+      if (timer) {
+        timer = setTimeout(() => {
+          clearTimeout(timer)
+          func.apply(ctx, [...args])
+        }, timeout)
+      }
+    }
+  }
+  ```
+
+- 最终实现
+
+  ```js
+  function throttle(func, timeout) {
+    let [last, timer] = [0, null]
+
+    return function () {
+      let [ctx, now] = [this, Date.now()]
+      let remaining = timeout - (now - last)
+
+      if (timer) {
+        clearTimeout(timer)
+        timer = null
+      }
+
+      if (remaining <= 0) {
+        last = now
+        func.apply(ctx, [...arguments])
+      } else {
+        timer = setTimeout(() => {
+          func.apply(ctx, [...arguments])
+        }, remaining)
+      }
+    }
+  }
+  ```
+
+## 深拷贝
+
+- 普通版本
+
+  ```js
+  function deepClone(source) {
+    if (!['object', 'function'].includes(typeof source)) {
+      return source
+    }
+
+    const target = Array.isArray(source) ? [] : {}
+
+    for (const key in source) {
+      if (source.hasOwnProperty(key)) {
+        if (source[key] && typeof source[key] === 'object') {
+          target[key] = deepClone(source[key])
+        } else {
+          target[key] = source[key]
+        }
+      }
+    }
+
+    return target
+  }
+  ```
+
+- 进阶版本 —— 考虑源对象是否是 Date、RegExp 实例对象并使用 WeakMap 来避免循环引用的情况出现
+
+  ```js
+  function deepClone(source, has = new WeakMap()) {
+    if (source === null) return null
+
+    if (source instanceof Date) return new Date(source)
+
+    if (source instanceof RegExp) return new RegExp(source)
+
+    if (typeof source !== 'object') return source
+
+    if (hash.has(source)) return hash.get(source)
+
+    const target = Array.isArray(source) ? [] : {}
+
+    Reflect.ownKeys(source).forEach((key) => {
+      target[key] = deepClone(source[key], hash)
+    })
+
+    return target
+  }
+  ```
+
+
