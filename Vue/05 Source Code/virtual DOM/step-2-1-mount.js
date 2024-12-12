@@ -1,5 +1,5 @@
 import { NODE_FLAG } from './step-1-h.js'
-import { patchProps } from './step-2-2-patch'
+import { patchProps } from './step-2-2-patch.js'
 
 export const mount = (vnode, parent, refNode) => {
   if (!parent) throw new Error('没有找到挂载点')
