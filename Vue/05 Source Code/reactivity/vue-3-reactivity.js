@@ -142,15 +142,30 @@ export function computed(getter) {
   }
 }
 
+/**
+ * 将应用程序挂载到指定的DOM元素上
+ * @param {Object} app - 应用程序实例
+ * @param {HTMLElement} el - 要挂载的DOM元素
+ */
 export function mount(app, el) {
+  // 创建一个副作用函数，用于在app.$data变化时更新DOM
   effect(() => {
-    app.$data && update(qpp, el)
+    // 如果app.$data存在，则调用update函数更新DOM
+    app.$data && update(app, el)
   })
 
+  // 调用app的setup函数，并将返回值赋值给app.$data
   app.$data = app.setup()
+  // 初始化时调用一次update函数，渲染DOM
   update(app, el)
 
+  /**
+   * 更新DOM元素的内容
+   * @param {Object} app - 应用程序实例
+   * @param {HTMLElement} el - 要更新的DOM元素
+   */
   function update(app, el) {
+    // 将app的render函数返回的内容设置为el的innerHTML
     el.innerHTML = app.render()
   }
 }

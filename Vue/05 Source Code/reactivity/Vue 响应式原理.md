@@ -147,7 +147,7 @@
        }
        ```
 
-       3. 实例化一个消息中心 Dep，在 getter 中收集当前的 Watcher，即 Dep.target，而在 setter 中通知所有的 Watcher 更新视图
+    3. 实例化一个消息中心 Dep，在 getter 中收集当前的 Watcher，即 Dep.target，而在 setter 中通知所有的 Watcher 更新视图
 
        ```js
        class Observer {
@@ -436,6 +436,7 @@
         ```
 
     6.  在 Vue 类的构造函数中，实例化一个 Compiler 类，调用 compile 方法编译模板
+
         ```js
         class Vue {
           constructor(options) {
@@ -450,3 +451,307 @@
         ```
 
 ## Vue 3 响应式原理
+
+1.  基本结构
+
+    1. reactive 方法
+
+    2. ref 方法
+
+    3. computed 方法
+
+    4. track 方法
+
+    5. trigger 方法
+
+    6. effect 方法
+
+2.  实现 reactive 方法
+
+    1. 接收一个对象 —— 判断传入的值是否是对象
+
+       ```js
+       export function reactive(data) {
+         if (typeof data !== 'object') return
+       }
+
+       function isObject(data) {
+         return typeof data === 'object' && data !== null
+       }
+       ```
+
+    2. 使用 ES6 Proxy 代理对象，设置其 get / set / deleteProperty 方法
+
+       ```js
+       export function reactive(data) {
+         if (typeof data !== 'object') return
+
+         return new Proxy(target, {
+           get(target, key, receiver) {},
+           set(target, key, newValue, receiver) {},
+           deleteProperty(target, key) {},
+         })
+       }
+       ```
+
+    3. 使用 Reflect 反射 API 操作对象
+
+       ```js
+       export function reactive(data) {
+         if (typeof data !== 'object') return
+
+         return new Proxy(target, {
+           get(target, key, receiver) {
+             const result = Reflect.get(target, key, receiver)
+
+             return isObject(result) ? reactive(result) : result
+           },
+           set(target, key, newValue, receiver) {
+             Reflect.set(target, key, newValue, receiver)
+
+             return true
+           },
+           deleteProperty(target, key) {
+             const result = Reflect.deleteProperty(target, key)
+
+             return result
+           },
+         })
+       }
+       ```
+
+    4. 在 get 方法中调用 track 方法收集依赖，在 set & deleteProperty 方法中调用 trigger 方法触发依赖
+
+       ```js
+       export function reactive(data) {
+         if (typeof data !== 'object') return
+
+         return new Proxy(target, {
+           get(target, key, receiver) {
+             const result = Reflect.get(target, key, receiver)
+
+             track(target, key)
+
+             return isObject(result) ? reactive(result) : result
+           },
+           set(target, key, newValue, receiver) {
+             Reflect.set(target, key, newValue, receiver)
+
+             trigger(target, key)
+
+             return true
+           },
+           deleteProperty(target, key) {
+             const result = Reflect.deleteProperty(target, key)
+
+             trigger(target, key)
+
+             return result
+           },
+         })
+       }
+       ```
+
+3.  为 track 和 trigger 方法提供两个全局变量
+
+    1. targetMap —— 一个 WeakMap 实例，key 为对象 target，value 为一个 Map 实例 —— key 为对象的属性名，value 为一个 Set 实例，存储依赖
+
+    2. activeEffect —— 当前正在执行的 effect 函数
+
+4.  实现 track 方法
+
+    1. 接收两个参数 —— 要追踪的目标对象 target 和目标对象的属性键 key
+
+    2. 尝试从 targetMap 中获取 target 对象的依赖映射 depsMap —— 不存在则映射一个新的 Map 实例
+
+       ```js
+       const depsMap = targetMap.get(target)
+
+       if (!depsMap) {
+         targetMap.set(target, new Map())
+       }
+       ```
+
+    3. 尝试从 depsMap 中获取 key 属性的依赖集合 —— 不存在则映射一个新的 Set 实例
+
+       ```js
+       const deps = depsMap.get(key)
+       if (!deps) {
+         depsMap.set(key, new Set())
+       }
+       ```
+
+    4. 将 activeEffect 函数添加到 deps 集合中
+
+       ```js
+       !dep.has(activeEffect) && dep.add(activeEffect)
+       ```
+
+5.  实现 trigger 方法
+
+    1. 接收两个参数 —— 要触发的目标对象 target 和目标对象的属性键 key
+
+    2. 尝试从 targetMap 中获取 target 对象的依赖映射 depsMap —— 不存在则直接返回
+
+       ```js
+       const depsMap = targetMap.get(target)
+       if (!depsMap) {
+         return
+       }
+       ```
+
+    3. 尝试从 depsMap 中获取 key 属性的依赖集合 deps —— 不存在则直接返回
+
+       ```js
+       const deps = depsMap.get(key)
+       if (!deps) {
+         return
+       }
+       ```
+
+    4. 遍历 deps 集合中的每个依赖函数 effect，调用其执行
+
+       ```js
+       deps.forEach((effect) => {
+         effect()
+       })
+       ```
+
+6.  实现 effect 方法
+
+    1. 接收两个参数，一个回调函数 func 和一个可选参数对象 options
+
+    2. 以闭包的形式返回一个 \_\_effect 函数作为实际的副作用函数
+
+       ```js
+       function effect(func, options = {}) {
+         const __effect = function (...args) {
+           activeEffect = __effect
+           func(...args)
+         }
+         return __effect
+       }
+       ```
+
+    3. 在 \_\_effect 函数中，将 activeEffect 赋值为 \_\_effect 函数本身，然后调用 func 函数
+
+    4. \_\_effect 函数需要先执行一次
+
+       ```js
+       function effect(func, options = {}) {
+         const __effect = function (...args) {
+           activeEffect = __effect
+           func(...args)
+         }
+
+         __effect()
+
+         return __effect
+       }
+       ```
+
+    5. 实际运用举例 —— 在将 Vue 实例挂载到 DOM 元素的 mount 方法中慧娴创建一个副作用函数 effect，在 实例数据 $data 变化时更新 DOM，重新渲染视图
+
+       ```js
+       export function mount(vm, el) {
+         effect(() => {
+           vm.$data && update(vm, el)
+         })
+
+         vm.$data = vm.setup()
+         update(vm, el)
+
+         function update(vm, el) {
+           // 将 vm 的 render 函数返回的内容设置为 el 的 innerHTML
+           el.innerHTML = vm.render()
+         }
+       }
+       ```
+
+7.  实现 [ref 方法](https://cn.vuejs.org/api/reactivity-core.html#ref)
+
+    1.  ref 方法接受一个内部值，返回一个响应式的、可更改的 ref 对象，此对象只有一个指向其内部值的属性 .value
+
+    2.  Proxy 无法代理基本数据类型，因此在 ref 内部将数据包装为一个对象
+
+    3.  在内部定义 getter 和 setter
+
+    4.  在 getter 中调用 track 收集依赖，在 setter 中调用 trigger 触发依赖
+
+        ```js
+        export function ref(data) {
+          let value = data
+
+          return {
+            get value() {
+              track(target, 'value')
+
+              return value
+            },
+            set value(newValue) {
+              if (value === newValue) return
+
+              value = newValue
+
+              trigger(target, 'value')
+            },
+          }
+        }
+        ```
+
+8.  实现 computed 方法
+
+    1.  接收一个 getter 函数，返回一个 ref 对象，此对象只有一个指向其内部值的属性.value
+
+    2.  将 getter 函数包装为一个 effect 函数
+
+        ```js
+        export function computed(getter) {
+          const run = effect(getter)
+        }
+        ```
+
+    3.  返回一个对象，用 getter 设置其 value 属性为 run 的返回值
+
+        ```js
+        export function computed(getter) {
+          const run = effect(getter)
+          return {
+            get value() {
+              return run()
+            },
+          }
+        }
+        ```
+
+## 响应式原理总结
+
+- 数据劫持方式
+
+  - Vue 2 —— Object.defineProperty
+
+  - Vue 3 —— Proxy
+
+- 依赖收集
+
+  - Vue 2 —— Dep 类 一个 Set 实例
+
+  - Vue 3 —— WeakMap ⇒ [key: Target → value: Map 实例] ⇒ [key: Target → value: [key: dataKey → value: Set 实例]]
+
+- 消息通知
+
+  - Vue 2 —— Dep 类的实例方法 notify
+
+  - Vue 3 —— trigger
+
+- 副作用函数收集
+
+  - Vue 2 —— Watcher 实例化时赋值给 Dep 类静态属性 Dep.target，由 Dep 实例 dep 的 add 方法收集到 Set 实例中
+
+  - Vue 3 —— effect 函数创建时赋值给全局变量 activeEffect，由 track 收集到 Set 实例中
+
+- 副作用函数声明
+
+    - Vue 2 —— 执行 new Complier 实例化时会 new Watcher 实例化
+
+    - Vue 3 —— 进行编译时调用 effect 函数
