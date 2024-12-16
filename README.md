@@ -1,5 +1,7 @@
-# 学习日志
+# 学习仓库
 
-## 2023/08/05
+## 学习重点
 
-- 载入原始Promise学习文档
+- [手写实现 Promises/A+ 规范](https://github.com/BogeFE/Document/tree/main/02%20Javascript/Promise/%E5%AE%9E%E7%8E%B0Promise)
+
+- [Node.js 事件循环模型]()
