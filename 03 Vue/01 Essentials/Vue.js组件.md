@@ -1,3 +1,46 @@
+# 待整理内容
+## 组件实例
+
+#### 创建应用实例
+
+每个 Vue 应用都是通过用 `createApp` 函数创建一个新的**应用实例**开始的：
+
+```js
+const app = Vue.createApp({
+  /* 选项 */
+})
+```
+
+#### 根组件
+
+一个应用需要被挂载到一个 DOM 元素中。例如，如果你想把一个 Vue 应用挂载到 `<div id="app"></div>`，应该传入 `#app`：
+
+```js
+const RootComponent = {
+  /* 选项 */
+}
+const app = Vue.createApp(RootComponent).mount('#app')
+```
+
+#### 组件实例 property
+
+在 data 中定义的 property 通过**组件实例**暴露
+
+```js
+const vm = Vue.createApp({
+  data() {
+    return {
+      count: 4,
+    }
+  },
+}).mount('#app')
+
+console.log(vm.count) //4
+```
+
+
+
+
 # **组件基础**
 ## **基本示例**
 这里有一个 `Vue` 组件的示例：
