@@ -100,28 +100,11 @@
 
 - `v-if` 指令只会在指令的表达式返回真值的时候渲染。
 
-  ```html
-  <h1 v-if="awesome">Vue is awesome!</h1>
-  ```
-
 - 可以用 `v-else` 添加一个“else 块” —— `v-else` 元素必须紧跟在带 `v-if` 或者 `v-else-if` 的元素的后面，否则它将不会被识别。
-
-  ```html
-  <h1 v-if="awesome">Vue is awesome!</h1>
-  <h1 v-else>Oh no 😢</h1>
-  ```
 
 - `v-else-if`，顾名思义，充当 `v-if` 的“else-if 块”，并且可以连续使用：`v-else-if` 也必须紧跟在带 `v-if` 或者 `v-else-if` 的元素之后。
 
 - `<template>` 上的 `v-if`、`v-else`、`v-else-if` —— 最后渲染的结果并不会包含这个 `<template>` 元素
-
-  ```html
-  <template v-if="ok">
-    <h1>Title</h1>
-    <p>Paragraph 1</p>
-    <p>Paragraph 2</p>
-  </template>
-  ```
 
 ### v-if VS v-show
 
@@ -160,12 +143,6 @@
 ### v-for
 
 - `v-for` 指令需要使用 `item in items` 形式的特殊语法 —— `items` 是源数据数组 & `item` 是被迭代的数组元素的**别名**。
-
-  ```html
-  <ul id="array-rendering">
-    <li v-for="item in items">{{ item.message }}</li>
-  </ul>
-  ```
 
 - `v-for` 还支持一个可选的第二个参数，即当前项的索引。
 
@@ -348,16 +325,7 @@
 
   - 内联事件处理器
 
-    ```html
-    <button @click="count++">Add 1</button>
-    <p>Count is: {{ count }}</p>
-    ```
-
   - 方法事件处理器
-
-    ```html
-    <button @click="greet">Greet</button>
-    ```
 
 ### 内联事件处理器
 
@@ -365,7 +333,6 @@
 
   ```html
   <button @click="say('hello')">Say hello</button>
-  <button @click="say('bye')">Say bye</button>
   ```
 
 - 访问事件参数 `$event`
