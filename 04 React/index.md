@@ -94,7 +94,6 @@
 
   - 组件渲染性能追踪
 
-
 ## React Hooks
 
 - 使命
@@ -107,13 +106,13 @@
 
 - 与 render props & HOC 比较
 
-  -  HOC 会额外增加元素层级，使得页面元素的数量更加臃肿
+  - HOC 会额外增加元素层级，使得页面元素的数量更加臃肿
 
   - 在硬编码层面减少代码数量，编译之后的代码也更少
 
 - useState 源码解析 —— 调用了 mountState 方法
 
-- mountState 源码解析 ——  队列
+- mountState 源码解析 —— 队列
 
 - 官方 Hooks
 
@@ -138,3 +137,49 @@
 - React.Suspense
 
 - React.lazy
+
+# 12.21
+
+- History 模式 - pushState / replaceState
+
+## Vue Router 源码
+
+- install 方法
+
+  - Vue.mixin
+
+  - 定义 $router & $route 属性
+
+  - 注册 RouterView & RouterLink 组件
+
+- mode 属性 —— 根据 mode 创建不同类型的 history 实例
+
+## React Router
+
+- react-router-dom
+
+  - Switch
+
+  - BrowserRouter
+
+  - useHistory
+
+  - useLocation
+
+  - useParams
+
+  - withRouter
+
+  - RouteComponentProps
+
+- react-router-config
+
+  - renderRoutes
+
+  - RouteConfig
+
+- react-router-dom 源码分析 —— 是对 react-router 的进一步封装
+
+- useContext
+
+- 路由守卫 —— Prompt 组件
