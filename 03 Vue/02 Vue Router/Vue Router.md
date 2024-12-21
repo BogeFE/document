@@ -249,7 +249,7 @@
   })
   ```
 
-## Vue Router 两种模式比较
+## 路由模式比较
 
 - Hash 模式 —— 默认
 
@@ -259,9 +259,11 @@
 
 - URL 中带着 `#`
 
-- hash 值会出现在 URL 中而不是在 HTTP 请求中
+- hash 值会出现在 URL 中而不是在 HTTP 请求中 —— hash值改变不会重新加载页面
 
 - onhashchange 事件
+
+- 通过访问 window.location.hash 来获取
 
 ### History 模式
 
@@ -269,7 +271,7 @@
 
 - history API
 
-  - 修改历史状态 —— 修改 url 后浏览器不会立即向后端发送请求
+  - 修改历史状态(HTML5 新增) —— 修改 url 后浏览器不会立即向后端发送请求，
 
     - pushState()
 
@@ -289,4 +291,6 @@
 
   - 点击浏览器的前进/后退按钮时触发
 
-  - JavaScript 调用 forward、back、go 方法时触发
+  - JavaScript 调用 forward / back / go 方法时触发
+
+- 通过访问 window.location.pathname 来获取

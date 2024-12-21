@@ -10,19 +10,18 @@ class HistoryRouter {
   go(path) {
     window.history.pushState({ path }, null, path)
 
-    this.invokePathCallbaca(path)
+    this.invokePathCallback(path)
   }
 
   _bindPopState() {
     // 监听 popstate 事件
     window.addEventListener('popstate', (e) => {
       const path = e.state && e.state.path
-      console.log(e.state)
 
-      this.invokePathCallbaca(path)
+      this.invokePathCallback(path)
     })
   }
-   invokePathCallbaca(path) {
+   invokePathCallback(path) {
     this.routes[path] && this.routes[path]()
   }
 }
