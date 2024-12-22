@@ -1,6 +1,6 @@
-## [Vuex 基础](https://vuex.vuejs.org/zh/)
+# [Vuex 基础](https://vuex.vuejs.org/zh/)
 
-### State
+## State
 
 - 在 Vue 组件中访问 Vuex 状态
 
@@ -42,7 +42,7 @@
   }
   ```
 
-### Getter
+## Getter
 
 - 本质就是 Vuex 的计算属性，接收 state 作为第一个参数
 
@@ -112,7 +112,7 @@
   }
   ```
 
-### Mutation
+## Mutation
 
 - 更改 Vuex 的 store 中的状态的唯一方法是提交 mutation
 
@@ -164,7 +164,7 @@
 
 - mutation 必须是同步函数，不能是异步函数
 
-### Action
+## Action
 
 - Action 与 Mutation 类似，不同在于：
 
@@ -232,19 +232,59 @@
   })
   ```
 
-### Module
+## Module
 
 - 目的 —— 将 store 分割成多个 store 模块
 
-## 简单实现 Vuex
+- 对于模块内部的功能
 
-### Vuex 原理
+  - 模块内部的 mutation & getter 的第一个参数 state 为模块局部状态对象
 
-- $store —— 在每个 Vue 组件实例的 beforeCreate 生命周期中通过 Vue.mixin 混入同一个 Store 实例作为 $store 属性
+  - 模块内部的 action 的第一个参数 context 可以分别访问局部状态 state & 根节点状态 rootState
+
+  - 模块内部的 getter 的第三个参数为根节点状态 rootState & 第四个参数为根节点计算属性 rootGetters
+
+- 命名空间 —— 配置 `namespaced: true`
+
+- 在全局命名空间分发 action & 提交 mutation —— dispatch & commit 传递第三个参数 `{ root: true }`
+
+- 对于辅助函数
+
+  - 将模块的命名空间字符串作为第一个参数传入
+
+  - 使用 createNamespacedHelpers 方法得到基于某个命名空间的辅助函数
+
+## 与 [localStorage](https://developer.mozilla.org/zh-CN/docs/Web/API/Window/localStorage) 的区别
+
+- 存储区域
+
+  - Vuex 存储在内存
+
+  - localStorage 存储在浏览器本地
+
+- 应用场景
+
+  - Vuex 用于组件之间的传值
+
+  - localStorage 是浏览器本地存储，用于跨页面传递数据
+
+- 时效性
+
+  - Vuex 存储的数据会在页面刷新时丢失
+
+  - localStorage 存储的数据具有永久性，需要手动清除
+
+- Vuex 能做到数据的响应式，而 localStorage 无法做到
+
+# 简单实现 Vuex
+
+## Vuex 原理
+
+- \$store —— 在每个 Vue 组件实例的 beforeCreate 生命周期中通过 Vue.mixin 混入同一个 Store 实例作为 \$store 属性
 
 - 响应式 —— 利用 Vue 的响应式原理，即 new Vue()
 
-### 实现步骤
+## 实现步骤
 
 1. 以 Vue 插件的形式实现 Vuex，需要提供一个 install 方法，在 install 方法中通过 Vue.mixin 在每个 Vue 组件实例的 beforeCreate 生命周期中混入 Store 实例
 
@@ -267,7 +307,7 @@
      const options = this.$options
      if (options.store) {
        this.$store =
-         typeof options.store === 'funtion' ? options.store() : options.store
+         typeof options.store === 'function' ? options.store() : options.store
      } else if (options.parent && options.parent.$store) {
        this.$store = options.parent.$store
      }
@@ -415,7 +455,7 @@
    function initStoreVM(store, state) {}
    ```
 
-### 可进一步实现
+## 可进一步实现
 
 - 辅助函数 mapState、mapGetters、mapMutations、mapGetters
 
