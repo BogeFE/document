@@ -119,7 +119,7 @@ _if_ 语句是使用最频繁的语句之一
 
 ## _do-while_ 语句
 
-_do-while_ 语句是一种**后测试**循环语句
+_do-while_ 语句是一种 **后测试** 循环语句
 
 - 循环体中的代码执行后才会对退出的条件进行求值
 
@@ -133,50 +133,55 @@ _do-while_ 语句是一种**后测试**循环语句
 
 ## _while_ 语句
 
-_while_ 语句是一种**先测试**循环语句
+_while_ 语句是一种 **先测试** 循环语句
 
 - **先检测退出条件**，再执行循环体中的代码执行
+
 - 循环体内的代码有可能不会执行
 
-```js
-while (expression) statement
-```
+  ```js
+  while (expression) statement
+  ```
 
 ## _for_ 语句
 
 _for_ 语句是**先测试**循环语句
 
 - _initialization_ —— 进入循环之前的初始化代码
+
 - _expression_ —— 退出条件
+
 - _post-loop-expression_ —— 循环执行后要执行的表达式
 
-```js
-for (initialization; expression; post - loop - expression) statement
-```
+  ```js
+  for (initialization; expression; post - loop - expression) statement
+  ```
 
 ## _for-in_ 语句
 
-_for-in_ 语句是一种严格的迭代语句，用于枚举对象中的**非符号键属性**
-
-```js
-for (property in expression) statement
-```
+_for-in_ 语句是一种严格的迭代语句，用于枚举对象中的 **非符号键属性**
 
 - _ECMAScript_ 中对象的属性是**无序**的，因此 _for-in_ 语句不保证顺序
+
 - 如果 _for-in_ 循环要迭代的变量是 _null_ 或 _undefined_ —— 则不执行循环体
+
+  ```js
+  for (property in expression) statement
+  ```
 
 ## _for-of_ 语句
 
 _for-of_ 语句是一种严格的迭代语句，用于遍历**可迭代对象**的元素
 
-```js
-for (property of expression) statement
-```
-
 - 目标可迭代 —— 如果尝试迭代的变量**不支持迭代**，则 _for-of_ 语句会抛出错误
+
 - 迭代顺序 —— 按照可迭代对象的 _next( )_ 方法产生值的顺序迭代元素
 
-## **标签语句**
+  ```js
+  for (property of expression) statement
+  ```
+
+## 标签语句
 
 标签语句用于给语句加标签
 
@@ -205,41 +210,42 @@ _break_ 和 _continue_ 语句为循环执行代码提供了更严格的控制手
 
 - _continue_ 语句也用于立即退出循环，但会再次从循环顶部开始执行
 
-```js
-let num = 0
-for (let i = 0; i < 10; i++) {
-  if (i % 5 === 0) {
-    continue
+  ```js
+  let num = 0
+  for (let i = 0; i < 10; i++) {
+    if (i % 5 === 0) {
+      continue
+    }
+    num++
   }
-  num++
-}
-console.log(num) //8
-```
+  console.log(num) //8
+  ```
 
 - _break_ 和 _continue_ 语句都可以与标签语句一起使用，返回代码中特定的位置
 
   ```js
-  let num1 = 0;
+  let num1 = 0
   outermost1:
-  for(let i = 9; i < 10; i++){
-      for(let j = 0; j < 10; j++){
-          if(i === 5 && j === 5){
-              break outermost;//同时退出内部循环（使用变量j）和外部循环（使用变量i）
-          }
-          num1++;
+  for (let i = 9; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      if (i === 5 && j === 5) {
+        break outermost
+        // 同时退出内部循环（使用变量j）和外部循环（使用变量i）
       }
+      num1++
+    }
   }
 
-  let num2 = 0;
+  let num2 = 0
   outermost:
-  for(let i = 9; i < 10; i++){
-      for(let j = 0; j < 10; j++){
-          if(i === 5 && j === 5){
-              continue outermost;
-              //当i和j都等于5时，会执行continue，跳到外部循环继续执行，从而导致内部循环少执行5次
-          }
-          num++;
+  for (let i = 9; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      if (i === 5 && j === 5) {
+        continue outermost
+        // 当i和j都等于5时，会执行continue，跳到外部循环继续执行，从而导致内部循环少执行5次
       }
+      num++
+    }
   }
   ```
 
@@ -268,41 +274,46 @@ console.log(num) //8
 _switch_ 语句是与 _if_ 语句紧密相关的一种流控制语句
 
 - 条件/分支 _case_ —— 如果表达式等于后面的值，则执行下面的语句
+
 - 关键字 _break_ —— 强制代码台退出 switch 语句（如果没有 break，则代码会继续匹配下一个条件）
+
 - 关键字 _default_ —— 用于在任何条件都没有满足时指定默认执行的语句，相当于 _else_
 
-```js
-switch (expression) {
-  case value1:
-    statement1
-    break
-  case value2:
-    statement2
-    break
-  case value3:
-    statement3
-    break
-  default:
-    statement
-}
-```
+  ```js
+  switch (expression) {
+    case value1:
+      statement1
+      break
+    case value2:
+      statement2
+      break
+    case value3:
+      statement3
+      break
+    default:
+      statement
+  }
+  ```
 
 _ECMAScript_ 为 _switch_ 语句赋予了一些独有的特性
 
 - _switch_ 语句可以用于所有数据类型
-- 条件的值可以是变量或者表达式
-- ⭐*case* 中比较每个条件的值时会使用**全等操作符 _===_**，不会强制转换数据类型
 
-```js
-switch ("hello world"){
-    case "hello"+"world":
-      console.log("Greeting was found.");
-      break;
-    case "goodbye"
-      console.log("Closing was found.");
-      break;
-    default:
-      console.log("Unexpected message was found.");
-      break;
-}
-```
+- 条件的值可以是变量或者表达式
+
+- ⭐ _case_ 中比较每个条件的值时会使用 **全等操作符 _===_**，不会强制转换数据类型
+
+  ```js
+  switch ("hello world"){
+      case "hello"+"world":
+        console.log("Greeting was found.");
+        break;
+      case "goodbye"
+        console.log("Closing was found.");
+        break;
+      default:
+        console.log("Unexpected message was found.");
+        break;
+  }
+  ```
+  
