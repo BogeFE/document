@@ -58,10 +58,10 @@
 
    - pushState 不会触发 popstate 事件，所以要主动调用 invokePathCallback 方法进行回调函数的执行
 
-   ```js
-   function go(path) {
-     window.history.pushState({ path }, null, path)
+     ```js
+     function go(path) {
+       window.history.pushState({ path }, null, path)
 
-     this.invokePathCallback(path)
-   }
-   ```
+       this.invokePathCallback(path)
+     }
+     ```
