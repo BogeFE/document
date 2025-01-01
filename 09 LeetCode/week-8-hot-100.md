@@ -285,6 +285,199 @@
 
 ## 二叉树
 
+### [二叉树的中序遍历](https://leetcode.cn/problems/binary-tree-inorder-traversal/?envType=study-plan-v2&envId=top-100-liked)
+
+- 核心思想 —— 递归
+
+- 递归终止条件 —— 节点为空
+
+  ```js
+  if (!root) return
+  ```
+
+- 递归调用顺序 —— 左子树 → 根节点 → 右子树
+
+  ```js
+  inorderTraversal(root.left)
+
+  res.push(root.val)
+
+  inorderTraversal(root.right)
+  ```
+
+### [二叉树的最大深度](./week%206-20241209.md#二叉树的最大深度)
+
+- 核心思想 —— 广度优先遍历 BFS
+
+### [翻转二叉树](./week%206-20241209.md#翻转二叉树)
+
+- 后序遍历
+
+### [对称二叉树](./week%206-20241209.md#对称二叉树)
+
+### [二叉树的直径](https://leetcode.cn/problems/diameter-of-binary-tree/?envType=study-plan-v2&envId=top-100-liked)
+
+- 核心思想 —— 直径 = 左子树到达底部节点的最长路径 + 1 + 1 + 右子树到达底部节点的最长路径
+
+- 辅助函数 func —— 计算节点到达底部节点的最长路径，并更新最大直径
+
+  - 递归终止条件 —— 节点为空，返回 -1，即底部节点到达底部节点的最长路径为 0
+
+    ```js
+    if (!root) return -1
+    ```
+
+  - 递归调用顺序 —— 左子树 → 根节点 → 右子树
+
+    ```js
+    const leftDepth = func(root.left)
+    const rightDepth = func(root.right)
+    ```
+
+  - 更新最大直径
+
+    ```js
+    maxDiameter = Math.max(maxDiameter, leftDepth + rightDepth + 2)
+    ```
+
+  - 返回节点到达底部节点的最长路径
+
+    ```js
+    return Math.max(leftDepth, rightDepth) + 1
+    ```
+
+### [二叉树的层序遍历](./week%206-20241209.md#二叉树的层序遍历)
+
+### [将有序数组转换为二叉搜索树](https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/description/?envType=study-plan-v2&envId=top-100-liked)
+
+- 二叉搜索树的概念
+
+  - 左子树的所有节点的值都小于根节点的值
+
+  - 右子树的所有节点的值都大于根节点的值
+
+  - 左右子树也都是二叉搜索树
+
+- 核心思想 —— 二分法
+
+- 辅助函数 buildTree —— 递归构建二叉搜索树
+
+  - 递归终止条件 —— 数组为空，返回 null
+
+    ```js
+    if (left > right) return null
+    ```
+
+  - 取数组中间元素作为根节点，递归构建左右子树
+
+    ```js
+    const middle = Math.floor((left + right) / 2)
+    const root = new TreeNode(nums[middle])
+
+    root.left = buildTree(left, middle - 1)
+    root.right = buildTree(middle + 1, right)
+    ```
+
+### [验证二叉搜索树](./week%206-20241209.md#验证二叉搜索树)
+
+- 核心思想 —— 中序遍历
+
+### [二叉搜索树中第 K 小的元素](./week%206-20241209.md#二叉搜索树中第K小的元素)
+
+- 核心思想 —— 中序遍历
+
+### [二叉树的右视图](./week%206-20241209.md#二叉树的右视图)
+
+- 核心思想 —— 层序遍历 BFS
+
+### [二叉树展开为链表](./week%206-20241209.md#二叉树展开为链表)
+
+- 核心思想 —— 前序遍历
+
+### [从前序与中序遍历序列构造二叉树](./week%206-20241209.md#从前序与中序遍历序列构造二叉树)
+
+- 🌟 前序遍历 preorder = [根节点, 左子树的前序遍历, 右子树前序遍历]
+
+- 🌟 中序遍历 inorder = [左子树的中序遍历, 根节点, 右子树的中序遍历]
+
+### [路径总和 III](https://leetcode.cn/problems/path-sum-iii/?envType=study-plan-v2&envId=top-100-liked)
+
+- 核心思想 —— 二叉树版本的[前缀和](#和为-k-的子数组)
+
+- 前缀和 —— 从根节点到当前节点的路径和
+
+- 定义哈希表 map，key 为前缀和，value 为前缀和出现的次数
+
+  - 初始值为 `map.set(0, 1)`
+
+    ```js
+    const map = new Map()
+    map.set(0, 1)
+    ```
+
+  - 为什么要初始值为 `map.set(0, 1)` —— 用于应对根节点本身就是目标和的情况
+
+- 定义变量 count，用于记录符合条件的子数组个数
+
+- 辅助函数 DFS —— 递归遍历二叉树
+
+  - 参数 —— 节点 root 和目标和 sum
+
+  - 递归终止条件 —— 节点为空
+
+    ```js
+    if (!root) return
+    ```
+
+  - 计算当前节点的前缀和
+
+    ```js
+    sum += root.val
+    ```
+
+  - 计算当前节点的前缀和与目标和的差值
+
+    ```js
+    const diff = sum - targetSum
+    ```
+
+  - 如果当前节点的前缀和与目标和的差值在哈希表中出现过，则将当前节点的前缀和出现的次数累加到 count 中
+
+    ```js
+    if (map.has(diff)) {
+      count += map.get(diff)
+    }
+    ```
+
+  - 将当前节点的前缀和出现的次数加 1
+
+    ```js
+    map.set(sum, (map.get(sum) || 0) + 1)
+    ```
+
+  - 递归调用顺序 —— 根节点 → 左子树 → 右子树
+
+    ```js
+    DFS(root.left, sum)
+    DFS(root.right, sum)
+    ```
+
+  - 恢复现场 —— 将当前节点的前缀和出现的次数减 1
+
+    ```js
+    map.set(sum, map.get(sum) - 1)
+    ```
+  
+  - [为什么要恢复现场](https://leetcode.cn/problems/path-sum-iii/solutions/2784856/zuo-fa-he-560-ti-shi-yi-yang-de-pythonja-fmzo/?envType=study-plan-v2&envId=top-100-liked) —— 避免重复遍历
+
+### [二叉树的最近公共祖先](./week%206-20241209.md#二叉树的最近公共祖先)
+
+### [二叉树中的最大路径和](./week%206-20241209.md#二叉树中的最大路径和)
+
+- 核心思想 —— 后序遍历
+
+- 需要舍弃副作用 —— 即左右子树的最大路径和小于 0 时，舍弃左右子树
+
 ## 图
 
 ### [岛屿数量](https://leetcode.cn/problems/number-of-islands/?envType=study-plan-v2&envId=top-100-liked)
