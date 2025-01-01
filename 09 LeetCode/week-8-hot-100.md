@@ -16,7 +16,7 @@
 
 - [链表](#链表)
 
-- [二叉树](#二叉树)
+- ✅ [二叉树](#二叉树)
 
 - ✅ [图](#图)
 
@@ -32,7 +32,7 @@
 
 - [动态规划](#动态规划)
 
-- [多维动态规划](#多维动态规划)
+- ✅ [多维动态规划](#多维动态规划)
 
 - ✅ [技巧](#技巧)
 
@@ -467,7 +467,7 @@
     ```js
     map.set(sum, map.get(sum) - 1)
     ```
-  
+
   - [为什么要恢复现场](https://leetcode.cn/problems/path-sum-iii/solutions/2784856/zuo-fa-he-560-ti-shi-yi-yang-de-pythonja-fmzo/?envType=study-plan-v2&envId=top-100-liked) —— 避免重复遍历
 
 ### [二叉树的最近公共祖先](./week%206-20241209.md#二叉树的最近公共祖先)
@@ -769,6 +769,53 @@
 ## 动态规划
 
 ## 多维动态规划
+
+### [不同路径](./week-7-20241215.md#不同路径-ii)
+
+- 不同路径 II 的简化版，无需考虑障碍物
+
+### [最小路径和](./week-7-20241215.md#最小路径和)
+
+### [最长回文子串](./week-7-20241215.md#最长回文子串)
+
+### [最长公共子序列](https://leetcode.cn/problems/longest-common-subsequence/?envType=study-plan-v2&envId=top-100-liked)
+
+- dp[i][j] —— 表示 text1 的前 i 个字符和 text2 的前 j 个字符的最长公共子序列的长度
+
+  ```js
+  const [len1, len2] = [text1.length, text2.length]
+
+  const dp = Array.from(Array(len1 + 1), () => Array(len2 + 1).fill(0))
+  ```
+
+- 状态转移方程
+
+  - dp[i][j] = dp[i - 1][j - 1] + 1 —— 如果 text1 的第 i 个字符和 text2 的第 j 个字符相同
+
+    ```js
+    if (text1[i - 1] === text2[j - 1]) {
+      dp[i][j] = dp[i - 1][j - 1] + 1
+    }
+    ```
+
+  - dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]) —— 如果 text1 的第 i 个字符和 text2 的第 j 个字符不同
+
+    ```js
+    if (text1[i - 1] !== text2[j - 1]) {
+      dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1])
+    }
+    ```
+
+- 双层 for 循环遍历 text1 和 text2
+
+  ```js
+  for (let i = 1; i <= len1; i++) {
+    for (let j = 1; j <= len2; j++) {
+    }
+  }
+  ```
+
+### [编辑距离](./week-7-20241215.md#编辑距离)
 
 ## 技巧
 
