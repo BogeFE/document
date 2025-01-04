@@ -14,13 +14,13 @@
 
 - ✅ [矩阵](#矩阵)
 
-- [链表](#链表)
+- ✅ [链表](#链表) —— [K 个一组翻转链表](#k-个一组翻转链表) & [两两交换链表中的节点](#两两交换链表中的节点)
 
 - ✅ [二叉树](#二叉树)
 
 - ✅ [图](#图)
 
-- [回溯](#回溯)
+- ✅ [回溯](#回溯)
 
 - [二分查找](#二分查找)
 
@@ -282,6 +282,254 @@
   - 如果当前元素小于目标值，向下移动一行 —— `该矩阵每列的元素从上到下升序排列`
 
 ## 链表
+
+### [相交链表](https://leetcode.cn/problems/intersection-of-two-linked-lists/?envType=study-plan-v2&envId=top-100-liked)
+
+- 核心思想 —— 双指针 & 指针是否相遇
+
+- 定义两个指针 pA 和 pB，分别指向两个链表的头节点
+
+  ```js
+  let [pA, pB] = [headA, headB]
+  ```
+
+- 定义两个布尔值变量 flagA 和 flagB，初始值为 false —— 表示当前指针是否从另一个链表出发
+
+  ```js
+  let [flagA, flagB] = [false, false]
+  ```
+
+- while 循环
+
+  - 循环条件 —— pA 和 pB 不为空
+
+    ```js
+    while (pA && pB) {}
+    ```
+
+  - 如果 pA 和 pB 相等，返回 pA —— 表示找到了相交节点
+
+    ```js
+    if (pA === pB) return pA
+    ```
+
+  - 如果 pA 为尾节点，且 flagA 为 false，则将 pA 指向 headB，flagA 置为 true —— 否则将 pA 指向下一个节点
+
+    ```js
+    if (!pA.next && !flagA) {
+      pA = headB
+      flagA = true
+    } else {
+      pA = pA.next
+    }
+    ```
+
+  - 如果 pB 为尾节点，且 flagB 为 false，则将 pB 指向 headA，flagB 置为 true —— 否则将 pB 指向下一个节点
+    ```js
+    if (!pB.next && !flagB) {
+      pB = headA
+      flagB = true
+    } else {
+      pB = pB.next
+    }
+    ```
+
+- while 循环结束 返回 null —— 表示没有找到相交节点
+
+### [反转链表](./Week%205-20241205.md#反转链表)
+
+### [回文链表](https://leetcode.cn/problems/palindrome-linked-list/description/?envType=study-plan-v2&envId=top-100-liked)
+
+- 遍历链表，将链表的值存入数组中
+
+  ```js
+  const arr = []
+  while (head) {
+    arr.push(head.val)
+    head = head.next
+  }
+  ```
+
+- 双指针遍历数组，分别从数组首尾出发，判断是否为回文
+
+### [环形链表](./Week%205-20241205.md#环形链表)
+
+### [环形链表 II](https://leetcode.cn/problems/linked-list-cycle-ii/?envType=study-plan-v2&envId=top-100-liked)
+
+- 解法一 —— 遍历链表并用 Set 存储节点，判断当前节点是否已经在 Set 中出现
+
+  ```js
+  while (node) {
+    if (set.has(node)) {
+      return node
+    }
+
+    set.add(node)
+    node = node.next
+  }
+  ```
+
+- 解法二 —— 快慢指针，可参考 [寻找重复数](#寻找重复数)
+
+  - 同 [环形链表](#环形链表) 进行快慢指针判断是否有环
+
+  - 发现有环后，将快指针指向头节点，慢指针不动
+
+    ```js
+    if (fast === slow) {
+      fast = head
+    }
+    ```
+
+  - fast 和 slow 同时移动，相遇的节点即为环的入口节点
+
+    ```js
+    while (fast !== slow) {
+      fast = fast.next
+      slow = slow.next
+    }
+    return fast
+    ```
+
+### [合并两个有序链表](https://leetcode.cn/problems/merge-two-sorted-lists/?envType=study-plan-v2&envId=top-100-liked)
+
+- 因为不确定哪个链表更长，所以需要一个虚拟头节点
+
+  ```js
+  const dummy = new ListNode(-1)
+
+  let node = dummy
+  ```
+
+- 定义双指针 p1 和 p2，分别指向两个链表的头节点
+
+  ```js
+  let [p1, p2] = [list1, list2]
+  ```
+
+- while 循环
+
+  - 循环条件 —— p1 和 p2 都不为空
+
+    ```js
+    while (p1 && p2) {}
+    ```
+
+  - 将较小的节点添加到新链表中
+
+    ```js
+    if (p1.val < p2.val) {
+      node.next = p1
+      p1 = p1.next
+    } else {
+      node.next = p2
+      p2 = p2.next
+    }
+    ```
+
+- while 循环结束后，将剩余的节点添加到新链表中
+
+  ```js
+  if (p1) {
+    node.next = p1
+  }
+  if (p2) {
+    node.next = p2
+  }
+  ```
+
+- 返回虚拟头节点的下一个节点
+
+  ```js
+  return dummy.next
+  ```
+
+### [两数相加](./Week%205-20241205.md#两数相加)
+
+### [删除链表的倒数第 N 个结点](./Week%205-20241205.md#删除链表的倒数第n个节点)
+
+### [随机链表的复制](./Week%205-20241205.md#随机链表的复制)
+
+- Map 存储原节点与新节点的对应关系 —— key 为旧节点 node，value 为 新节点 new Node(node.val)
+
+### [排序链表](https://leetcode.cn/problems/sort-list/?envType=study-plan-v2&envId=top-100-liked)
+
+- 目前只会暴力解法
+
+- 用数组存储链表中的所有节点
+
+  ```js
+  const arr = []
+  while (head) {
+    arr.push(head)
+    head = head.next
+  }
+  ```
+
+- 对数组进行排序
+
+  ```js
+  arr.sort((a, b) => a.val - b.val)
+  ```
+
+- 🌟 使用 [reduceRight](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight) 方法将数组中的节点连接起来
+
+  ```js
+  return arr.reduceRight((res, node) => {
+    node.next = res
+    res = node
+    return res
+  }, null)
+  ```
+
+### [合并 K 个升序链表](https://leetcode.cn/problems/merge-k-sorted-lists/?envType=study-plan-v2&envId=top-100-liked)
+
+- 暴力解法
+
+  - 用 reduce 方法将所有节点收集到一个数组中
+
+    ```js
+    const res = lists.reduce((arr, list) => {
+      while (list) {
+        arr.push(list)
+        list = list.next
+      }
+      return arr
+    }, [])
+    ```
+
+  - 对数组排序并使用 [reduceRight](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight) 方法将数组中的节点连接起来
+
+    ```js
+    return res
+      .sort((a, b) => a.val - b.val)
+      .reduceRight((res, node) => {
+        node.next = res
+        res = node
+        return res
+      }, null)
+    ```
+
+### [LRU 缓存](./Week%205-20241205.md#LRU-缓存)
+
+- 需要一个额外的方法 moveToHead 将最近访问 / 操作到的节点移动到链表头部
+
+  ```js
+  LRUCache.prototype.moveToHead = function (node) {
+    const [prevNode, nextNode] = [node.prev, node.next]
+    prevNode.next = nextNode
+    nextNode.prev = prevNode
+
+    node.prev = this.head
+    node.next = this.head.next
+    this.head.next.prev = node
+    this.head.next = node
+  }
+  ```
+
+### [K 个一组翻转链表](https://leetcode.cn/problems/reverse-nodes-in-k-group/?envType=study-plan-v2&envId=top-100-liked)
+
+### [两两交换链表中的节点](https://leetcode.cn/problems/swap-nodes-in-pairs/description/?envType=study-plan-v2&envId=top-100-liked)
 
 ## 二叉树
 
@@ -758,6 +1006,401 @@
 
 ## 回溯
 
+### [全排列](https://leetcode.cn/problems/permutations/?envType=study-plan-v2&envId=top-100-liked)
+
+- 临时数组 temp 记录当前排列
+
+- 结果数组 res 记录已有排列
+
+- 哈希表 used 记录当前排列中每个数字是否已经被使用
+
+- 定义回溯函数 backtrack
+
+  - 递归终止条件 —— 临时数组 temp 的长度等于原数组 nums 的长度
+
+    ```js
+    if (temp.length === nums.length) {
+      res.push([...temp])
+      return
+    }
+    ```
+
+  - for-of 遍历原数组 nums 的每个元素
+
+    - 如果当前元素已经被使用，则跳过
+
+      ```js
+      if (used[num]) {
+        continue
+      }
+      ```
+
+    - 如果未被使用 —— 将当前元素加入临时数组 temp，并将当前元素标记为已使用
+
+      ```js
+      temp.push(num)
+      used[num] = true
+      ```
+
+    - 递归调用回溯函数 backtrack
+
+    - 恢复现场 —— 将当前元素从临时数组 temp 中移除，并将当前元素标记为未使用
+
+      ```js
+      temp.pop()
+      used[num] = false
+      ```
+
+### [子集](https://leetcode.cn/problems/subsets/description/?envType=study-plan-v2&envId=top-100-liked)
+
+- 临时数组 temp 记录当前子集
+
+- 结果数组 res 存储已有子集
+
+- 使用深度优先遍历 DFS —— 对于每一个数组都有 选 或 不选 两种选择
+
+  - 递归终止条件 —— 遍历完原数组 nums
+
+    ```js
+    if (index === nums.length) {
+      res.push([...temp])
+      return
+    }
+    ```
+
+  - 如果不选，则直接递归调用 DFS
+
+    ```js
+    DFS(index + 1)
+    ```
+
+  - 如果选择，则将当前元素加入临时数组 temp，并递归调用 DFS
+
+    ```js
+    temp.push(nums[index])
+    DFS(index + 1)
+    ```
+
+  - 恢复现场 —— 将当前元素从临时数组 temp 中移除
+
+    ```js
+    temp.pop()
+    ```
+
+### [电话号码的字母组合](https://leetcode.cn/problems/letter-combinations-of-a-phone-number/description/?envType=study-plan-v2&envId=top-100-liked)
+
+- 临时数组 temp 记录当前号码
+
+- 结果数组 res 存储已有号码
+
+- 数组 map 记录每个数字对应的字母，下标为数字，值为字母字符串
+
+  ```js
+  const map = ['', '', 'abc', 'def', 'ghi', 'jkl', 'mno', 'pqrs', 'tuv', 'wxyz']
+  ```
+
+- 定义回溯函数 backtrack
+
+  - 参数 —— 起始索引 start
+
+  - 递归终止条件 —— 临时数组 temp 的长度等于原数组 digits 的长度
+
+    ```js
+    if (temp.length === digits.length) {
+      res.push(temp.join(''))
+      return
+    }
+    ```
+
+  - for-of 遍历原数组 digits 的每个数字对应的字符字符串
+
+    ```js
+    for (const char of map[digits[start]]) {
+    }
+    ```
+
+  - 将当前字符加入临时数组 temp，并递归调用回溯函数 backtrack
+
+    ```js
+    temp.push(char)
+    backtrack(start + 1)
+    ```
+
+  - 恢复现场 —— 将当前字符从临时数组 temp 中移除
+
+    ```js
+    temp.pop()
+    ```
+
+### [组合总和](https://leetcode.cn/problems/combination-sum/?envType=study-plan-v2&envId=top-100-liked)
+
+- 临时数组 temp 记录当前组合
+
+- 结果数组 res 存储已有组合
+
+- 定义回溯函数 backtrack
+
+  - 参数 —— 起始索引 start 和当前和 sum
+
+  - 剪枝 —— 如果当前和 sum 加上当前元素大于目标和 target，则跳过
+
+  - 递归终止条件 —— 临时数组 temp 的和 sum 等于目标和 target
+
+    ```js
+    if (sum > target) return
+
+    if (sum === target) {
+      res.push([...temp])
+      return
+    }
+    ```
+
+  - for 循环遍历原数组 candidates —— 从起始索引 start -1 开始，表示重复选择前一个元素
+
+    ```js
+    for (let i = start > 0 ? start - 1 ; i < candidates.length; i++) {
+    }
+    ```
+
+  - 将当前元素加入临时数组 temp，并递归调用回溯函数 backtrack
+
+    ```js
+    temp.push(candidates[i])
+    backtrack(i + 1, sum + candidates[i])
+    ```
+
+  - 恢复现场 —— 将当前元素从临时数组 temp 中移除
+
+    ```js
+    temp.pop()
+    ```
+
+### [括号生成](https://leetcode.cn/problems/generate-parentheses/?envType=study-plan-v2&envId=top-100-liked)
+
+- 临时数组 temp 记录当前括号组合
+
+- 结果数组 res 存储已有括号组合
+
+- 定义回溯函数 backtrack
+
+  - 参数 —— 左括号数 left 和右括号数 right
+
+  - 递归终止条件 —— 左括号数 left 和右括号数 right 都为 0
+
+    ```js
+    if (left === 0 && right === 0) {
+      res.push(temp.join(''))
+      return
+    }
+    ```
+
+  - 如果左括号数 left 大于 0，则将左括号加入临时数组 temp，并递归调用回溯函数 backtrack
+
+    ```js
+    if (left > 0) {
+      temp.push('(')
+      backtrack(left - 1, right)
+      temp.pop()
+    }
+    ```
+
+  - 如果右括号数 right 大于左括号数 left，则将右括号加入临时数组 temp，并递归调用回溯函数 backtrack
+
+    ```js
+    if (right > left) {
+      temp.push(')')
+      backtrack(left, right - 1)
+      temp.pop()
+    }
+    ```
+
+### [单词搜索](https://leetcode.cn/problems/word-search/?envType=study-plan-v2&envId=top-100-liked)
+
+- 深度优先遍历 DFS
+
+  - 参数 x, y 表示当前位置, index 表示当前匹配的单词索引
+
+  - 剪枝 —— 如果当前位置的字符不等于单词的当前字符，则返回 false
+
+    ```js
+    if (board[x][y] !== word[index]) return false
+    ```
+
+  - 终止条件 —— 如果当前匹配的单词索引 index 等于单词的长度，则返回 true
+
+    ```js
+    if (index === word.length - 1) return true
+    ```
+
+  - 将当前位置的字符标记为已访问
+
+    ```js
+    board[x][y] = '#'
+    ```
+
+  - 在 (x, y) 的上下左右四个方向递归调用 DFS
+
+    ```js
+    for (const [j, k] of [
+      [x + 1, y],
+      [x, y + 1],
+      [x - 1, y],
+      [x, y - 1],
+    ]) {
+      if (DFS(j, k, index + 1)) return true
+    }
+    ```
+
+  - 恢复现场 —— 将当前位置的字符还原为原来的字符
+
+    ```js
+    board[x][y] = word[index]
+    ```
+
+  - 双层 for 循环遍历整个二维数组并调用 DFS
+
+    ```js
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[0].length; j++) {
+        if (DFS(row, col, 0)) return true
+      }
+    }
+    ```
+
+### [分割回文串](https://leetcode.cn/problems/palindrome-partitioning/?envType=study-plan-v2&envId=top-100-liked)
+
+- 临时数组 temp 记录当前分割
+
+- 结果数组 res 存储已有分割
+
+- 辅助函数 isPalindrome 判断字符串是否为回文串
+
+  ```js
+  const isPalindrome = (s, left, right) => {
+    while (left < right) {
+      if (s.charAt(left++) !== s.charAt(right--)) return false
+    }
+
+    return true
+  }
+  ```
+
+- 深度优先遍历 DFS —— 是否在当前位置分割
+
+  - 参数 —— 分割起始索引 start & 分割终止索引 end
+
+  - 递归终止条件 —— 终止索引 end 等于原字符串 s 的长度
+
+    ```js
+    if (end === s.length) {
+      res.push([...temp])
+      return
+    }
+    ```
+
+  - 选择不分割 —— 将 end + 1 并递归调用 DFS
+
+    ```js
+    DFS(start, end + 1)
+    ```
+
+  - 选择分割 —— 判断当前子串是否为回文串，如果是则将当前子串加入临时数组 temp
+
+    ```js
+    if (isPalindrome(s, start, end)) {
+      temp.push(s.slice(start, end + 1))
+    }
+    ```
+
+  - 切割后将 end + 1 作为新的起始索引 start 并递归调用 DFS
+
+    ```js
+    DFS(end + 1, end + 1)
+    ```
+
+  - 恢复现场 —— 将当前子串从临时数组 temp 中移除
+
+    ```js
+    temp.pop()
+    ```
+
+### [N 皇后](https://leetcode.cn/problems/n-queens/?envType=study-plan-v2&envId=top-100-liked)
+
+- 临时数组 temp 记录当前皇后的位置 —— **下标为行 row，值为列 col**
+
+- 结果数组 res 存储已有皇后的位置
+
+- 问题分解
+
+  - 递归方向 —— 从第 0 行开始逐行向下
+
+  - columnMap 数组 —— 记录当前列是否有皇后，**下标为列 col，值为布尔值**
+
+  - rightTopMap 数组 —— 记录当前右上方 ↗️ 是否有皇后 —— 斜线上 row + col 相等
+
+  - rightBottomMap 数组 —— 记录当前右下 ↘️ 方向上是否有皇后 —— 斜线上 row - col + n - 1 相等
+
+- 定义回溯函数 backtrack
+
+  - 参数 —— 起始行 row = 0
+
+  - 递归终止条件 —— 起始行 row 等于 n
+
+    ```js
+    if (row === n) {
+      res.push(
+        temp.map((col) => '.'.repeat(col) + 'Q' + '.'.repeat(n - col - 1))
+      )
+      return
+    }
+    ```
+
+  - for 循环遍历当前行的每一列
+
+    ```js
+    for (let col = 0; col < n; col++) {}
+    ```
+
+  - 判断当前列 col 是否可以放置皇后 —— columnRecord[col] === false
+
+  - 判断当前右上方 ↗️ 是否可以放置皇后 —— rightTopMap[row + col] === false
+
+  - 判断当前右下 ↘️ 是否可以放置皇后 —— rightBottomMap[row - col + n - 1] === false
+
+    ```js
+    if (
+      columnRecord[col] === false &&
+      rightTopMap[row + col] === false &&
+      rightBottomMap[row - col + n - 1] === false
+    ) {
+    }
+    ```
+
+  - 如果可以放置皇后 —— 将当前列 col 加入临时数组 temp，并将当前列 col 标记为已放置
+
+    ```js
+    temp[row] = col
+    columnRecord[col] =
+      rightTopMap[row + col] =
+      rightBottomMap[row - col + n - 1] =
+        true
+    ```
+
+  - 递归调用回溯函数 backtrack
+
+    ```js
+    backtrack(row + 1)
+    ```
+
+  - 恢复现场 —— 将当前列 col 标记为未放置 —— 因为 temp 数组是直接将列 col 赋值给 temp[row]，所以无需手动移除
+
+    ```js
+    columnRecord[col] =
+      rightTopMap[row + col] =
+      rightBottomMap[row - col + n - 1] =
+        false
+    ```
+
 ## 二分查找
 
 ## 栈
@@ -810,8 +1453,7 @@
 
   ```js
   for (let i = 1; i <= len1; i++) {
-    for (let j = 1; j <= len2; j++) {
-    }
+    for (let j = 1; j <= len2; j++) {}
   }
   ```
 
