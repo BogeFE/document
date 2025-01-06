@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>几何图形</title>
+</head>
+
+<style>
+    body {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .container {
+        width: 45%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid paleturquoise;
+    }
+
+    .triangle {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .triangle div {
+        width: 0;
+        height: 0;
+    }
+
+    .triangle div:first-child {
+        border: 100px solid;
+        border-color: red blue green yellow;
+    }
+
+    .triangle div:nth-child(2) {
+        border-top: 100px solid red;
+        border-left: 100px solid transparent;
+        border-right: 100px solid transparent;
+    }
+
+    .triangle div:last-child {
+        border-top: 100px solid red;
+        border-right: 100px solid transparent;
+    }
+
+    .sector {
+        width: 0;
+        height: 0;
+        border-radius: 100px;
+        border: 100px solid transparent;
+        border-top-color: green;
+    }
+
+    .circle {
+        display: flex;
+    }
+
+    .circle div {
+        margin-right: 50px;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background-color: red;
+    }
+
+    .circle div:last-child {
+        width: 200px;
+        height: 100px;
+        border-radius: 0 0 100px 100px;
+    }
+
+    .trapezoid {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .trapezoid div {
+        height: 0px;
+        width: 100px;
+    }
+
+    .trapezoid div:first-child {
+        border-bottom: 200px solid red;
+        border-right: 100px solid green;
+    }
+    
+    .trapezoid div:last-child {
+        border-bottom: 200px solid red;
+        border-left: 100px solid green;
+        border-right: 100px solid green;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <h1>三角形</h1>
+        <div class="triangle">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>扇形</h1>
+        <div class="sector"></div>
+    </div>
+
+    <div class="container">
+        <h1>圆形</h1>
+        <div class="circle">
+            <div>圆形</div>
+            <div>半圆</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>梯形</h1>
+        <div class="trapezoid">
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CSS 多列布局</title>
+</head>
+
+<body>
+    <h1>两栏布局</h1>
+    <div class="box-1">
+        <div class="left">左边</div>
+        <div class="right">右边</div>
+    </div>
+
+    <h1>三栏布局 —— 父相子绝</h1>
+    <div class="box-2">
+        <div class="middle">中</div>
+        <div class="left">左</div>
+        <div class="right">右</div>
+    </div>
+
+    <h1>三栏布局 —— 浮动</h1>
+    <div class="box-3">
+        <div class="left">左</div>
+        <div class="right">右</div>
+        <div class="middle">中</div>
+    </div>
+
+    <h1>三栏布局 —— 圣杯布局 —— 父元素 padding 为左右两栏预留位置</h1>
+    <div class="box-4">
+        <div class="middle">中</div>
+        <div class="left">左</div>
+        <div class="right">右</div>
+    </div>
+
+    <h1>三栏布局 —— 圣杯布局 —— flex</h1>
+    </h1>
+    <div class="box-5">
+        <div class="middle">中 —— flex: 1</div>
+        <div class="left">左 —— order: -1</div>
+        <div class="right">右</div>
+    </div>
+
+    <h1>三栏布局 —— 双飞翼布局 —— 子元素 margin 为左右两栏预留位置</h1>
+    </h1>
+    <div class="box-6">
+        <div class="middle">
+            <div class="content">中</div>
+        </div>
+        <div class="left">左</div>
+        <div class="right">右</div>
+    </div>
+</body>
+
+<style>
+    .left,
+    .right,
+    .middle {
+        height: 200px;
+        font-size: 16px;
+        line-height: 200px;
+        text-align: center;
+    }
+
+    .left {
+        background-color: rgb(252, 120, 212);
+    }
+
+    .middle {
+        background-color: rgb(130, 130, 240);
+    }
+
+    .right {
+        background-color: rgb(120, 252, 212);
+    }
+
+    .box-1 .left {
+        float: left;
+        width: 200px;
+    }
+
+    .box-1 .right {
+        margin-left: 210px;
+    }
+
+    .box-2 {
+        position: relative;
+    }
+
+    .box-2 .left {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 200px;
+    }
+
+    .box-2 .right {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 200px;
+    }
+
+    .box-2 .middle {
+        margin: 0 210px;
+    }
+
+    .box-3 {
+        overflow: hidden;
+    }
+
+    .box-3 .left {
+        float: left;
+        width: 200px;
+    }
+
+    .box-3 .right {
+        float: right;
+        width: 200px;
+
+    }
+
+    .box-3 .middle {
+        margin: 0 210px;
+    }
+
+    .box-4 {
+        overflow: hidden;
+        padding: 0 210px;
+    }
+
+    .box-4 .middle {
+        float: left;
+        width: 100%;
+    }
+
+    .box-4 .left {
+        position: relative;
+        float: left;
+        width: 200px;
+        margin-left: -100%;
+        left: -210px;
+    }
+
+    .box-4 .right {
+        position: relative;
+        float: left;
+        width: 200px;
+        margin-left: -200px;
+        right: -210px;
+    }
+
+    .box-5 {
+        display: flex;
+        flex: 1;
+        min-height: 200px;
+    }
+
+    .box-5 .middle {
+        flex: 1;
+    }
+
+    .box-5 .left {
+        order: -1;
+        flex: 0 0 200px;
+        margin-right: 10px;
+    }
+
+    .box-5 .right {
+        flex: 0 0 200px;
+        margin-left: 10px;
+    }
+
+    .box-6 {
+        overflow: hidden;
+    }
+
+    .box-6 .middle {
+        float: left;
+        width: 100%;
+    }
+
+    .box-6 .middle .content {
+        margin: 0 210px;
+    }
+
+    .box-6 .left {
+        float: left;
+        width: 200px;
+        margin-left: -100%;
+    }
+
+    .box-6 .right {
+        float: left;
+        width: 200px;
+        margin-left: -200px;
+    }
+</style>
+
+</html>
