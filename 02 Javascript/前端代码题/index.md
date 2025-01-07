@@ -42,67 +42,67 @@
 
 ### 原型链继承
 
-    ```js
-    function Parent(){}
+```js
+function Parent() {}
 
-    function Child(){}
+function Child() {}
 
-    Child.prototype = new Parent()
-    Child.prototype.constructor = Child
-    ```
+Child.prototype = new Parent()
+Child.prototype.constructor = Child
+```
 
 ### 构造函数继承
 
-    ```js
-    function Parent(){}
+```js
+function Parent() {}
 
-    function Child(){
-        Parent.call(this)
-    }
-    ```
+function Child() {
+  Parent.call(this)
+}
+```
 
 ### 组合继承
 
-    ```js
-    function Parent(){}
+```js
+function Parent() {}
 
-    function Child(){
-        Parent.call(this)
-    }
+function Child() {
+  Parent.call(this)
+}
 
-    Child.prototype = new Parent()
-    Child.prototype.constructor = Child
-    ```
+Child.prototype = new Parent()
+Child.prototype.constructor = Child
+```
 
 ### 寄生组合继承
 
-    ```js
-    function Parent(){}
+```js
+function Parent(){}
 
-    function Child(name){
-        Parent.call(this)
-    }
+function Child(name){
+    Parent.call(this)
+}
 
-    function tempFunction = (){}
-    tempFunction.prototype = Parent.prototype
-    Child.prototype = new tempFunction()
-    // or
-    Child.prototype = Object.create(Parent.prototype)
+function tempFunction = (){}
+tempFunction.prototype = Parent.prototype
+Child.prototype = new tempFunction()
+// or
+Child.prototype = Object.create(Parent.prototype)
 
-    Child.prototype.constructor = Child
-    ```
+Child.prototype.constructor = Child
+```
 
 ### ES6 继承
 
-    ```js
-    class Parent {}
+```js
+class Parent {}
 
-    class Child extends Parent {
-        constructor(){
-            super()
-        }
-    }
-    ```
+class Child extends Parent {
+  constructor() {
+    super()
+  }
+}
+```
 
 ## 实现 new 关键字
 
