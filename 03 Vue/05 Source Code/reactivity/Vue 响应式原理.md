@@ -247,8 +247,7 @@
        this.key = key
        this.callback = callback
 
-       Dep.target = this
-       vm[key]
+       Dep.target = this.vm[key]
      }
    }
    ```
