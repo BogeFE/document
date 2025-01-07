@@ -238,7 +238,7 @@
    }
    ```
 
-2. 在构造函数中，将当前的 Watcher 实例赋值给 Dep.target，然后读取 vm[key]，触发 getter，从而收集依赖
+2. 在构造函数中，将当前的 Watcher 实例赋值给 Dep.target，然后读取 vm[key]，触发 getter，从而收集依赖   
 
    ```js
    class Watcher {
@@ -247,7 +247,7 @@
        this.key = key
        this.callback = callback
 
-       Dep.target = this.vm[key]
+       Dep.target = this
      }
    }
    ```
