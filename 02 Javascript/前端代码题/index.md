@@ -1,46 +1,42 @@
-✅ 实现 instanceof 运算符
+# 前端代码题
 
-✅ 实现继承
+✅ [实现 instanceof 运算符](#实现-instanceof-运算符)
 
-✅ 实现 new 关键字
+✅ [实现继承](#实现继承)
 
-✅ 实现 Object.create
+✅ [实现 new 关键字](#实现-new-关键字)
 
-✅ 实现 Object.assign
+✅ [实现 Object.create](#实现-objectcreate)
 
-✅ 使用 Promise 封装 Ajax
+✅ [实现 Object.assign](#实现-objectassign)
 
-✅ 实现 Function.prototype.call 方法
+✅ [使用 Promise 封装 Ajax](#使用-promise-封装-ajax)
 
-✅ 实现 Function.prototype.apply 方法
+✅ [实现 Function.prototype.call 方法](#实现-functionprototypecall-方法)
 
-✅ 实现 Function.prototype.bind 方法
+✅ [实现 Function.prototype.apply 方法](#实现-functionprototypeapply-方法)
 
-✅ 打平数组
+✅ [实现 Function.prototype.bind 方法](#实现-functionprototypebind-方法)
 
-✅ 防抖（debounce）
+✅ [打平数组](#打平数组)
 
-✅ 节流（throttle）
+✅ [防抖（debounce）](#防抖debounce)
 
-✅ 实现数组原型方法
+✅ [节流（throttle）](#节流throttle)
 
-EventBus 事件总线 —— 发布订阅模式
+✅ [实现数组原型方法](#实现数组原型方法)
 
-✅ 使用 setTimeout 实现 setInterval
+✅ [使用 setTimeout 实现 setInterval](#使用-settimeout-实现-setinterval)
 
-✅ 深浅拷贝
+✅ [深拷贝](#深拷贝)
 
-函数柯里化
+✅ [函数柯里化](#函数柯里化)
 
-✅ 实现 Promise 静态方法
+✅ [实现 Promise 静态方法](#实现-promise-静态方法)
 
-解析 URL 参数
+✅ [解析 URL 参数](#解析-url-参数)
 
-数据双向绑定
-
-JSONP
-
-# 2024-11-30
+✅ [数据双向绑定](../../03%20Vue/05%20Source%20Code/reactivity/Vue%20响应式原理.md)
 
 ## 实现继承
 
@@ -160,8 +156,6 @@ function myAssign(target, ...source) {
 }
 ```
 
-# 2024-12-01
-
 ## 实现 Function.prototype.bind 方法
 
 ```js
@@ -239,8 +233,6 @@ if (!Function.prototype.apply) {
 }
 ```
 
-# 2024-12-02
-
 ## 打平数组
 
 ```js
@@ -258,8 +250,6 @@ function flatDepth(arr, depth = 1) {
   }
 }
 ```
-
-# 2024-12-03
 
 ## 实现数组原型方法
 
@@ -524,8 +514,6 @@ Array.prototype.reduce = function (callbackFn, initialValue) {
   }
   ```
 
-# 2024-12-04
-
 ## 使用 Promise 封装 AJAX
 
 - AJAX —— Asynchronous JavaScript and XML，即异步的 Javascript 和 XML
@@ -686,8 +674,6 @@ function MyInstanceOf(left, right) {
   cancelTimeout()
   ```
 
-# 2024-12-07
-
 ## 防抖（debounce）
 
 ```js
@@ -821,4 +807,62 @@ function debounce(func, delay) {
   }
   ```
 
+## 函数柯里化
 
+```js
+function curry(func) {
+  const paramsCollector = (...args1) => {
+    if (args1.length === func.length) {
+      return func.args
+    } else {
+      return (...args2) => paramsCollector(...args1, ...args2)
+    }
+  }
+
+  return paramsCollector
+}
+```
+
+## 解析 URL 参数
+
+- 使用正则表达式将 URL 问号 ? 之后的部分提取出来
+
+- 以 & 作为分隔符将提取得到的字符串分割为参数键值对数组
+
+- 使用 test 方法判断参数键值对中是否包含等号 =
+
+- 如果不包含`等号 =` —— 直接赋值为 true
+
+- 如果包含`等号 =` —— 以 `等号 =` 分割字符串得到 key & value
+
+- 对参数值 val 使用 [decodeURIComponent](https:/developer.mozilla.org/zh-CN/docs/Web/JavaScriptReference/Global_Objects/decodeURIComponent) 方法进行解码
+
+- 对参数值 val 使用 test 方法判断是否为一个纯数字字符串 —— 果是则转换为 Number 类型
+
+- 判断参数对象中是否已经存在 key —— 如果存在则以 Array 形式储
+
+  ```js
+  function parseUrl(url) {
+    const paramsStr = /.+\?(.+)$/.exec(url)[1]
+    const paramsList = paramsStr.split('&')
+    const params = {}
+
+    paramsList.forEach((param) => {
+      if (/=/.test(param)) {
+        let [key, value] = param.split('=')
+        value = decodeURIComponent(value)
+        value = isNaN(value) ? value : parseFloat(value)
+
+        if (params.hasOwnProperty(key)) {
+          params[key] = [].concat(params[key], value)
+        } else {
+          params[key] = value
+        }
+      } else {
+        params[param] = true
+      }
+    })
+
+    return params
+  }
+  ```
