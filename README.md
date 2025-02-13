@@ -110,13 +110,13 @@
 
 - 元素是否在可视区域
 
-    - 本质 —— 元素相对于上边框的偏移量是否小于视窗高度 + 滚动距离
+  - 本质 —— 元素相对于上边框的偏移量是否小于视窗高度 + 滚动距离
 
-    - 偏移量 el.offsetTop
+  - 偏移量 el.offsetTop
 
-    - 视窗高度 —— window.innerHeight / document.documentElement.clientHeight / document.body.clientHeight
+  - 视窗高度 —— window.innerHeight / document.documentElement.clientHeight / document.body.clientHeight
 
-    - 滚动距离 scrollTop
+  - 滚动距离 scrollTop
 
 - 上拉加载 & 下拉刷新
 
@@ -171,3 +171,76 @@
   - 解决方案 —— bignumber.js
 
 - 尾递归 —— 在尾部直接调用自身的递归函数
+
+### 排序算法
+
+- 快速排序
+
+  ```js
+  function quickSort(arr) {
+    return quick(arr, 0, arr.length - 1)
+  }
+
+  function quick(arr, left, right) {
+    if (left < right) {
+      const index = artition(arr, left, right)
+      quick(arr, left, index - 1)
+      quick(arr, index + 1, right)
+    }
+    return arr
+  }
+
+  function partition(arr, left, right) {
+    const pivotIndex = left
+    const pivot = arr[pivotIndex]
+
+    let point = pivotIndex + 1
+
+    for (let i = point; i <= right; i++) {
+      if (arr[i] < pivot) {
+        [arr[point], arr[i]] = [arr[i], arr[point]]
+        point++
+      }
+    }
+
+    // 为什么-1 —— point 会指向最后一个小于基准值 pivot 的后一个下标
+    point -= 1
+    ;[arr[point], arr[pivotIndex]] = [arr[pivotIndex], arr[point]]
+
+    return point
+  }
+  ```
+
+- 冒泡排序
+
+  ```js
+  function bubbleSort(arr) {
+    for (let i = 0; i < arr.length; i++) {
+      for (let j = 0; j < arr.length - 1 - i; j++) {
+        if (arr[j] > arr[j + 1]) {
+          [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
+        }
+      }
+    }
+    return arr
+  }
+  ```
+
+- 选择排序
+
+  ```js
+  function selectionSort(arr) {
+    for (let i = 0; i < arr.length; i++) {
+      let minIndex = i
+
+      for (let j = i; j < arr.length; j++) {
+        if (arr[j] < arr[minIndex]) {
+          minIndex = j
+        }
+      }
+      [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]]
+    }
+
+    return arr
+  }
+  ```
