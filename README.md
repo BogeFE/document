@@ -106,11 +106,39 @@
 
   - indexedDB
 
-- AJAX —— XMLHttpRequest ——
+- AJAX —— XMLHttpRequest
 
 - 元素是否在可视区域
 
+    - 本质 —— 元素相对于上边框的偏移量是否小于视窗高度 + 滚动距离
+
+    - 偏移量 el.offsetTop
+
+    - 视窗高度 —— window.innerHeight / document.documentElement.clientHeight / document.body.clientHeight
+
+    - 滚动距离 scrollTop
+
 - 上拉加载 & 下拉刷新
+
+  - 第三方库 —— iscroll ｜ better-scroll ｜ pulltorefresh.js
+
+  - 上拉加载 —— 本质是当前页面触底
+
+    - 滚动视窗的高度距离顶部的距离 document.documentElement.scrollTop
+
+    - 屏幕可视区域高度 document.documentElement.clientHeight
+
+    - 所有元素总长度 document.body.scrollHeight
+
+    - 公式 `scrollTop + clientHeight >= scrollHeight`
+
+  - 下拉刷新 —— 页面本身置于顶部时，用户下拉时需要触发的动作
+
+    - 原生事件 touchStart —— 记录初始位置
+
+    - 原生事件 touchmove —— 记录位置差值
+
+    - 原生事件 touchend —— 页面下拉到最大值时出发事件回调
 
 - 正则表达式
 
@@ -136,7 +164,7 @@
 
 - 数字精度丢失问题
 
-  - 存储机制 —— 双精度浮点数 ｜ 十进制 → 二进制 ｜ 
+  - 存储机制 —— 双精度浮点数 ｜ 十进制 → 二进制 ｜
 
   - 限制 —— 64 位 ｜ 转换过程出现无限循环
 
