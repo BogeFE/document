@@ -172,6 +172,25 @@
 
 - 尾递归 —— 在尾部直接调用自身的递归函数
 
+
+
+
+
+### Vue
+
+- 数据双向绑定原理
+
+  - 采用数据劫持 + 发布订阅模式，实现数据层 Model 和视图View 之间的响应式更新
+
+  - 初始化响应式数据 —— Object.defineProperty 劫持 data，对每个属性设置 getter 和 setter，在 setter 触发时通知视图更新
+
+  - 依赖收集 —— 问数据时（getter），将当前组件的 Watcher 订阅到 Dep（依赖收集器）中 ｜ 当数据变化时（setter），调用 Dep.notice 通知 Watcher.update 执行，触发视图更新。
+
+  - Watcher 触发虚拟 DOM 重新渲染，更新视图。
+
+- Vue 2 & Vue 3
+
+- 
 ### 排序算法
 
 - 快速排序
