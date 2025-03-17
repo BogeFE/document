@@ -172,15 +172,11 @@
 
 - 尾递归 —— 在尾部直接调用自身的递归函数
 
-
-
-
-
 ### Vue
 
 - 数据双向绑定原理
 
-  - 采用数据劫持 + 发布订阅模式，实现数据层 Model 和视图View 之间的响应式更新
+  - 采用数据劫持 + 发布订阅模式，实现数据层 Model 和视图 View 之间的响应式更新
 
   - 初始化响应式数据 —— Object.defineProperty 劫持 data，对每个属性设置 getter 和 setter，在 setter 触发时通知视图更新
 
@@ -194,7 +190,8 @@
 
 - 首屏加载 FCP
 
-- 
+-
+
 ### 排序算法
 
 - 快速排序
@@ -221,7 +218,7 @@
 
     for (let i = point; i <= right; i++) {
       if (arr[i] < pivot) {
-        [arr[point], arr[i]] = [arr[i], arr[point]]
+        ;[arr[point], arr[i]] = [arr[i], arr[point]]
         point++
       }
     }
@@ -241,7 +238,7 @@
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < arr.length - 1 - i; j++) {
         if (arr[j] > arr[j + 1]) {
-          [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
+          ;[arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
         }
       }
     }
@@ -261,16 +258,61 @@
           minIndex = j
         }
       }
-      [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]]
+      ;[arr[i], arr[minIndex]] = [arr[minIndex], arr[i]]
     }
 
     return arr
   }
   ```
 
-
 ### 前端缓存
 
 - HTTP 缓存 / 浏览器缓存 —— 强缓存 & 协商缓存
 
-- 
+## Electron
+
+- 核心架构
+
+  - 主进程 Main Process —— 控制整个应用的生命周期，管理窗口、菜单、文件访问等。
+
+  - 渲染进程 Renderer Process —— 每个窗口都有一个渲染进程，用于显示 UI，类似浏览器的网页。
+
+  - 进程间通信 IPC —— 数据交互
+
+- 常见问题
+
+  - 体检大
+
+  - 性能问题 ——
+
+### Electron 中的 Node.js
+
+- 应用生命周期管理 —— Electron 的主进程依赖 Node.js 来管理应用的生命周期
+
+  - 启动应用 —— app.whenReady
+
+  - 监听窗口关闭 —— app.on('window-all-closed', app.quit)
+
+- 窗口管理 —— 依靠 Node.js 的 BrowserWindow 创建和管理窗口
+
+- 进程间通信 —— Node.js 负责在主进程中监听和处理事件
+
+  - 主进程 —— ipcMain
+
+  - 渲染进程 —— ipcRenderer
+
+- 访问文件系统 —— 使用原生 fs 模块
+
+- 获取系统信息 —— 使用原生 os 模块
+
+- 发送 HTTP 请求 —— 原生 https 模块
+
+- 系统级别 API
+
+  - 读取环境变量 —— process.env
+
+  - 监听键盘快捷键 —— globalShortcut
+
+  - 发送系统通知 —— new Notification()
+
+- 运行子进程 —— child_process

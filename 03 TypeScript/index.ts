@@ -1,8 +1,19 @@
-let a = undefined
-let b = null
+type Keys = 'option1' | 'option2'
+type Flags = { [K in Keys]: boolean }
+const flags: Flags = {
+  option1: true,
+  option2: false,
+}
 
-let type: 'type'
+interface PageInfo {
+  title: string
+}
+type Page = 'home' | 'about' | 'contact'
 
-type = 'type'
+const nav: Record<Page, PageInfo> = {
+  home: { title: 'Home' },
+  about: { title: 'About' },
+  contact: { title: 'Contact' },
+}
 
-type = 'type_'
+type B = Exclude<'a' | 'b' | 'c', 'a' | 'b'> // "c"

@@ -56,11 +56,11 @@
 
 - 值类型 —— 单个值也是一种类型
 
-- 联合类型 —— 任何一个类型只要属于 `A` 或 `B`，就属于联合类型 `A|B`
+- 联合类型 —— 任何一个类型只要属于 `A` 或 `B`，就属于联合类型 `A | B`
 
   - 联合类型可以与值类型相结合，表示一个变量的值有若干种可能
 
-- 交叉类型 —— 任何一个类型必须同时属于 `A` 和 `B`，才属于交叉类型 `A&B`
+- 交叉类型 —— 任何一个类型必须同时属于 `A` 和 `B`，才属于交叉类型 `A & B`
 
   - 不可能的交叉类型会被认定为 never —— `number & string`
 
@@ -79,10 +79,121 @@
 
 - type 命令 —— 定义一个类型的别名
 
-    - 不允许重名
+  - 不允许重名
 
-    - 块级作用域
+  - 块级作用域
 
-    - 属于类型相关的代码，编译成 JavaScript 的时候，会被全部删除
+  - 属于类型相关的代码，编译成 JavaScript 的时候，会被全部删除
 
-- 
+-
+
+# 听课笔记
+
+- 面试场景 —— 根据场景实现一个 interface
+
+## 基础知识
+
+- 枚举 enum —— 默认值为 0、1、2，
+
+  ```ts
+  enum Color {
+    Red,
+    Green,
+    Blue,
+  }
+  ```
+
+- type & interface
+
+- 操作符
+
+  - typeof
+
+  - keyof
+
+  - in
+
+    ```ts
+    type Keys = 'option1' | 'option2'
+
+    type Flags = { [K in Keys]: boolean }
+
+    const flags: Flags = {
+      option1: true,
+      option2: false,
+    }
+    ```
+
+  - extends
+
+  - Partial<T> —— 将传入的 T 类型的属性全部变为可选项
+
+  - Required<T> —— 将传入的 T 类型的属性全部变为必选项
+
+  - Record<K, T> —— 将传入的 K 类型的属性全部变为 T 类型
+
+    ```ts
+    interface PageInfo {
+      title: string
+    }
+    type Page = 'home' | 'about' | 'contact'
+
+    const nav: Record<Page, PageInfo> = {
+      home: { title: 'Home' },
+      about: { title: 'About' },
+      contact: { title: 'Contact' },
+    }
+    ```
+
+  - Exclude<T, U>
+
+    ```ts
+    type B = Exclude<'a' | 'b' | 'c', 'a' | 'b'> // "c"
+    ```
+
+  - Extract<T, U> —— 从 T 中提取 U
+
+## 面试题
+
+- 使用 TypeScript 的好处
+
+  - ts 是 js 的超集，给 js 添加了可选的静态类型和基于类的面向对象编程
+
+  - 编译错误提示 —— ts 在开发时暴露，js 在运行时暴露
+
+  - 强类型语言，可读性极强
+
+  - ts 中有很多方便特性
+
+- type 和 interface 的异同
+
+  - interface 重点用于描述数据结构 —— type 重点描述类型
+
+  - 都可以描述一个对象或函数
+
+    ```ts
+    interface SetUser {
+      (name: string): void
+    }
+
+    type SetUser = (name: string) => void
+    ```
+
+  - 都允许使用 extends 进行两两组合
+
+- 基于已有类型，扩展得到一个大部分属性相同，个别属性不同的新类型
+
+- 泛型 —— 定义时不预先指定类型，使用时在
+
+  ```ts
+  interface User<T = any> {
+    userId: T
+  }
+
+  type UserA = User<string>
+  type UserB = User<number>
+  ```
+
+- 课程中有三个实战片段
+
+- 编译流程
