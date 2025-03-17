@@ -1,5 +1,21 @@
 # NestJS
 
+## Nest CLI
+
+- 获取功能信息 —— `nest --help`
+
+- 获取命令选项 —— `nest <command> --help`
+
+- 快速生成文件 —— `nest g resource <moudle name>`
+
+  - 模块 Module —— 组织代码
+
+  - 控制器 Controller —— 定义 CRUD 路径
+
+  - 服务 Service —— 表示/隔离业务逻辑
+
+  - 实体类 Entity —— 资源数据类型
+
 ## 概述
 
 - 基于 Express 的 Node.js 框架，也可配置为 Fastify
